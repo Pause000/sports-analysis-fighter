@@ -92,10 +92,10 @@ def merge_preprocess_translate(
     txt_files = sorted(input_path.glob("*.txt"))
 
     if not txt_files:
-        print("❌ 폴더에 txt 파일이 없습니다.")
+        print("ERROR : 폴더에 txt 파일이 없습니다.")
         return
 
-    print(f"📂 텍스트 파일 {len(txt_files)}개 병합 시작")
+    print(f" 텍스트 파일 {len(txt_files)}개 병합 시작")
 
     # 1️⃣ 모든 파일 병합
     merged_texts = []
@@ -106,16 +106,16 @@ def merge_preprocess_translate(
         )
 
     merged_text = "\n".join(merged_texts)
-    print(f"▶ 병합 후 길이: {len(merged_text)}자")
+    print(f" 병합 후 길이: {len(merged_text)}자")
 
     # 2️⃣ 전처리
     cleaned = clean_text(merged_text)
     cleaned = postprocess_sentences(cleaned)
-    print(f"▶ 전처리 후 길이: {len(cleaned)}자")
+    print(f"전처리 후 길이: {len(cleaned)}자")
 
     # 3️⃣ 번역
     if not contains_korean(cleaned):
-        print("⚠️ 한글 없음 → 번역 생략")
+        print("WARNING : 한글 없음 → 번역 생략")
         final_text = cleaned
     else:
         translator = Translator()
@@ -123,17 +123,17 @@ def merge_preprocess_translate(
         translated_chunks = []
 
         for i, chunk in enumerate(chunks):
-            print(f"⏳ 번역 중... ({i+1}/{len(chunks)})")
+            print(f" 번역 중... ({i+1}/{len(chunks)})")
             translated_chunks.append(safe_translate(translator, chunk))
             time.sleep(1)
 
         final_text = "\n".join(translated_chunks)
 
-    # 4️⃣ 최종 결과 저장 (1개 파일)
+    # 최종 결과 저장 (1개 파일)
     Path(output_file).write_text(final_text, encoding="utf-8")
-    print("✅ 완료")
-    print(f"▶ 저장 위치: {output_file}")
-    print(f"▶ 최종 길이: {len(final_text)}자")
+    print("완료")
+    print(f"저장 위치: {output_file}")
+    print(f"최종 길이: {len(final_text)}자")
 
 
 # =============================
@@ -141,6 +141,6 @@ def merge_preprocess_translate(
 # =============================
 if __name__ == "__main__":
     merge_preprocess_translate(
-        input_dir=r"", # 번역할 폴더
-        output_file=r"", # 저장할 위치
+        input_dir=r"C:\Python\project\KBO_text_data\KIA", # 번역할 폴더
+        output_file=r"C:\Python\test.txt", # 저장할 위치
     )
