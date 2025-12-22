@@ -36,6 +36,18 @@ def load_team_data(directory, file_names):
                         pass
     return merged_text
 
+# 다른 디렉토리를 갖은 사람의 mergetxt함수
+
+
+# 전처리 코드
+
+
+
+
+
+
+
+
 # 3. [핵심] 범용 채점 로직이 적용된 분석 함수
 def analyze_team_universal(team_name, text_data):
     if not text_data:
@@ -43,7 +55,7 @@ def analyze_team_universal(team_name, text_data):
         return None
 
     # 무료 티어 안정성을 위해 길이 제한
-    input_text = text_data[:45000]
+    input_text = text_data[:]
     
     print(f"▶ [{team_name}] 범용 기준(EPL/K리그/KBO/F1) 적용 중... ({len(input_text)}자)")
 
@@ -136,12 +148,12 @@ def analyze_team_universal(team_name, text_data):
 # ---------------------------------------------------------
 # 4. 실행부 (종목 섞어서 테스트 권장)
 # ---------------------------------------------------------
-base_dir = r"" # ⚠️ 경로 수정 필요
+base_dir = r"C:\python\multicam\soccer" # ⚠️ 경로 수정 필요
 
 # 테스트용 팀 목록 (축구, 야구, F1 등 다양하게 넣어보세요)
 teams = {
     # 축구
-    # "🔵 첼시": ['첼시 FC.txt', 'Chelsea.txt', 'Chelsea FC.txt', '첼시_full.txt'],
+    "🔵 첼시": ['첼시 FC.txt', 'Chelsea.txt', 'Chelsea FC.txt', '첼시_full.txt'],
     # 야구 (데이터가 있다면)
     # "🦁 삼성 라이온즈": ['삼성 라이온즈.txt'],
     # F1 (데이터가 있다면)
@@ -154,6 +166,7 @@ print("🚀 [통합] 전 종목 범용 분석 시작...\n")
 
 for team_name, file_list in teams.items():
     text_data = load_team_data(base_dir, file_list)
+    
     team_json = analyze_team_universal(team_name, text_data)
     
     if team_json:
