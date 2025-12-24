@@ -183,6 +183,7 @@ def merge_preprocess_translate(
         translated_chunks = []
 
         for i, chunk in enumerate(chunks):
+
             print(f" 번역 중... ({i+1}/{len(chunks)})")
             translated_chunks.append(safe_translate(chunk, src="ko", dest="en"))
             time.sleep(1)  # 너무 빠른 요청 방지
@@ -190,11 +191,11 @@ def merge_preprocess_translate(
         # 번역된 조각을 합치기
         final_text = "\n".join(translated_chunks)
 
+
     # 5) 번역본 저장
     Path(translated_output_file).write_text(final_text, encoding="utf-8")
     print(f"번역본 저장: {translated_output_file}")
     print(f"최종 길이: {len(final_text)}자")
-
 
 # =============================
 # 실행부
@@ -205,3 +206,4 @@ if __name__ == "__main__":
         cleaned_output_file=r"",        # 예: r"C:\data\out\cleaned.txt" 전처리만 완료된 파일을 저장할 경로
         translated_output_file=r"",     # 예: r"C:\data\out\translated.txt" 전처리, 번역 완료된 파일을 저장할 경로
     )
+

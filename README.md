@@ -1,4 +1,11 @@
 # sports-analysis-fighter
+
+## 팀원 소개
+- 조장 : 강연우
+- 조원 : 신종환
+- 조원 : 조중현
+- 조원 : 한정현
+
 ## 프로젝트 소개
 - 프로젝트 명 : 사용자 성향 기반 스포츠 팀 추천 챗봇
 - 목적
@@ -37,3 +44,13 @@
     + 팀 정보 및 속성 데이터 관리
 + FrontEnd
   + HTML / CSS / JAVAScript
+
+- Tools
+  - Git / GitHub (버전관리)
+
+## 코드에 대한 설명
+- makingjson.py
+  - 제미나이 API를 사용하여 팀 데이터를 분석하고 JSON 파일로 저장
+
+- merge_pre_trans.py
+  - 팀 데이터를 전처리하고 번역하여 JSON 파일로 저장
