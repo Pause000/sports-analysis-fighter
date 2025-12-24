@@ -47,3 +47,10 @@
 
 - Tools
   - Git / GitHub (버전관리)
+
+## 코드에 대한 설명
+- makingjson.py
+  - 제미나이 API를 사용하여 팀 데이터를 분석하고 JSON 파일로 저장
+
+- merge_pre_trans.py
+  - 팀 데이터를 전처리하고 번역하여 JSON 파일로 저장
