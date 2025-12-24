@@ -4,7 +4,20 @@ import time
 import google.generativeai as genai
 
 # 1. API 설정
-API_KEY = os.getenv('api_key')  # ⚠️ 본인의 API 키 입력
+# 1. API 설정
+try:
+    from dotenv import load_dotenv
+    load_dotenv() # .env 파일 로드
+except ImportError:
+    print("⚠️ python-dotenv가 설치되지 않았습니다. .env 로드 실패 가능성 있음.")
+
+API_KEY = os.getenv('api_key')  # ⚠️ .env의 변수명(api_key) 확인 완료
+
+if not API_KEY:
+    print("❌ Fatal Error: API Key is missing!")
+    print("   Please check your .env file and ensure variable 'api_key' exists.")
+    exit()
+
 genai.configure(api_key=API_KEY)
 
 
@@ -17,7 +30,7 @@ model = genai.GenerativeModel(model_name)
 def analyze_team(team_name, text_data):
     if not text_data: return None
     
-    text_data = text_data[:] 
+    text_data = text_data[:30000]
     
     prompt = f"""
     너는 스포츠 데이터 분석가야. 텍스트를 분석하여 '{team_name}'의 성향 데이터를 JSON으로 추출해.
@@ -77,7 +90,7 @@ def analyze_team(team_name, text_data):
 # ----------------------------
 if __name__ == "__main__":
     # 데이터가 저장된 '스포츠이름' 폴더 경로로 수정하세요
-    source_dir = r"C:\python\multicam\KBO_text_data\KBO" 
+    source_dir = r"C:\Python\project\KBO_text_data\헣전처리번역" 
     db = []
 
     if not os.path.exists(source_dir):
@@ -87,7 +100,7 @@ if __name__ == "__main__":
         print(f"🚀 총 {len(files)}개 팀 데이터 분석 시작")
 
         for file_name in files:
-            team_name = file_name.replace('.txt', '').replace('_cleaned', '')
+            team_name = file_name.replace('.txt', '').replace('_merge', '')
             file_path = os.path.join(source_dir, file_name)
             
             print(f"\n[분석 중] {team_name}...")
