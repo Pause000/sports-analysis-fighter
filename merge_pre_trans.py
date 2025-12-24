@@ -201,7 +201,7 @@ def merge_preprocess_translate(
 # =============================
 if __name__ == "__main__":
     merge_preprocess_translate(
-        input_dir=r"",                 # 예: r"C:\data\texts"
-        cleaned_output_file=r"",        # 예: r"C:\data\out\cleaned.txt"
-        translated_output_file=r"",     # 예: r"C:\data\out\translated.txt"
+        input_dir=r"",                 # 예: r"C:\data\texts", 전처리할 파일 폴더
+        cleaned_output_file=r"",        # 예: r"C:\data\out\cleaned.txt" 전처리만 완료된 파일을 저장할 경로
+        translated_output_file=r"",     # 예: r"C:\data\out\translated.txt" 전처리, 번역 완료된 파일을 저장할 경로
     )
