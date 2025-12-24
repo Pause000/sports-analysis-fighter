@@ -29,3 +29,11 @@
   - 가장 적합한 팀을 추천
  
 ## 🛠 기술 스택
++ BackEnd
+  + Python
+    + 성향 분석 로직
+    + 팀 추천 알고리즘 구현
+  + SQL
+    + 팀 정보 및 속성 데이터 관리
++ FrontEnd
+  + HTML / CSS / JAVAScript
