@@ -42,7 +42,7 @@ def analyze_team(team_name, text_data):
     4. team_name은 반드시 '한글'로 출력해.
 
     [데이터 생성 조건]
-    1. style_tags: 팀의 특징을 잘 나타내는 영문 키워드 15개를 생성해. (이 키워드들은 웹 출력 시 한글로 번역되어 사용될 예정임)
+    1. style_tags: 팀의 특징을 잘 나타내는 한글 키워드 15개를 생성해. (이 키워드들은 웹 출력 시 한글로 번역되어 사용될 예정임)
     2. league: 반드시 ['EPL', 'K league', 'F1', 'KBO'] 중 하나를 선택해.
     3. sport: 반드시 ['축구', '야구', '모터스포츠'] 중 하나를 선택해.
 
@@ -101,8 +101,8 @@ def analyze_team(team_name, text_data):
 # 3. 메인 실행부 (파일 로드 및 저장)
 # ----------------------------
 if __name__ == "__main__":
-    source_dir = r"" # 분석할 폴더
-    output_dir = r"" # 분석된 결과를 담을 새 폴더
+    source_dir = r"C:\work\K리그_모음\FC서울_전처리_번역" # 분석할 폴더
+    output_dir = r"C:\work\K리그_모음\FC서울_전처리_번역" # 분석된 결과를 담을 새 폴더
     
     # 결과 저장용 폴더가 없으면 생성
     if not os.path.exists(output_dir):

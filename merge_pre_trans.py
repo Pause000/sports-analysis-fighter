@@ -206,4 +206,3 @@ if __name__ == "__main__":
         cleaned_output_file=r"",        # 예: r"C:\data\out\cleaned.txt" 전처리만 완료된 파일을 저장할 경로
         translated_output_file=r"",     # 예: r"C:\data\out\translated.txt" 전처리, 번역 완료된 파일을 저장할 경로
 )
-
