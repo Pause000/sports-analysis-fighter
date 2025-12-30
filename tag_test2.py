@@ -11,7 +11,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 # ---------------------------------------------------------
 # 1. 초기 설정 및 가중치
 # ---------------------------------------------------------
-DATA_DIR = r'C:\Python\project\KBO_text_data\JSON모음'  # ✅ JSON 폴더 경로
+DATA_DIR = r'C:\project\sports-analysis-fighter\JSON 모음'  # ✅ JSON 폴더 경로
 ALPHA, BETA, GAMMA = 0.4, 0.4, 0.2                     # ✅ 통합 점수 가중치
 model_nlp = SentenceTransformer('snunlp/KR-SBERT-V40K-klueNLI-augSTS')  # ✅ SBERT 모델 로드
 
