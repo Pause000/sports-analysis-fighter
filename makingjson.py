@@ -144,3 +144,4 @@ if __name__ == "__main__":
         print("\n" + "="*50)
         print(f"모든 팀 개별 분석 완료! 폴더: {output_dir}")
         print("="*50)
+        
