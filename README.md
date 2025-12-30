@@ -55,11 +55,13 @@
 - merge_pre_trans.py
   - 팀 데이터를 전처리하고 번역하여 JSON 파일로 저장
 
-
-## INSERT_team_info.py 설정
-
-- DB_HOST = your_db_host
-- DB_PORT = 3306
-- DB_USER = your_db_user
-- DB_PASSWORD = your_db_password
-- DB_NAME = your_db_name
+## insert_team 코드에 대한 설명
+- 주의사항
+  - DB 비밀번호 작성 필요!!
+  
+- .env
+  - DB_HOST = your_db_host
+  - DB_PORT = 3306
+  - DB_USER = your_db_user
+  - DB_PASSWORD = your_db_password
+  - DB_NAME = your_db_name
