@@ -60,6 +60,7 @@
   - DB 비밀번호 작성 필요!!
   
 - .env
+  - api_key = 제미나이_api_key
   - DB_HOST = your_db_host
   - DB_PORT = 3306
   - DB_USER = your_db_user
