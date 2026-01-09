@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>SBUNPA - AI 스포츠 플랫폼</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="nav-left">
+            <h1 class="logo shimmer" onclick="goHome()"><i>SBUNPA</i></h1>
+            <div class="nav-links">
+                <a href="#" class="active" onclick="goHome()">홈</a>
+                <a href="#about">ⓘ 소개</a>
+            </div>
+        </div>
+        <div class="nav-right">
+            <button class="login-btn" onclick="openModal(false)">로그인</button>
+            <button class="glass-btn" onclick="openModal(true)">회원가입</button>
+        </div>
+    </nav>
+
+    <main id="home-view">
+        <section class="carousel-section live-section-wrapper">
+            <button class="slide-arrow left" onclick="scrollGrid(this, 'left')">❮</button>
+            <div class="carousel-track" id="carousel-track">
+                <div class="live-card-large">
+                    <div class="badge"><span class="dot-live"></span> <b>EPL LIVE</b></div>
+                    <div class="match-vs">
+                        <div class="team"><img
+                                src="https://upload.wikimedia.org/wikipedia/en/7/7a/Manchester_City_FC_badge.svg"
+                                width="60">
+                            <p>맨시티</p>
+                        </div>
+                        <div class="score">2 : 1</div>
+                        <div class="team"><img src="https://upload.wikimedia.org/wikipedia/en/c/ce/Arsenal_FC.svg"
+                                width="60">
+                            <p>아스널</p>
+                        </div>
+                    </div>
+                    <h3>AI 전술 분석: 아스널의 하이프레싱 대응 중</h3>
+                </div>
+                <div class="live-card-large">
+                    <div class="badge"><span class="dot-live"></span> <b>K리그 LIVE</b></div>
+                    <div class="match-vs">
+                        <div class="team"><img src="https://upload.wikimedia.org/wikipedia/ko/d/d7/Ulsan_HD_FC_logo.svg"
+                                width="60">
+                            <p>울산</p>
+                        </div>
+                        <div class="score">0 : 0</div>
+                        <div class="team"><img
+                                src="https://upload.wikimedia.org/wikipedia/ko/f/f3/Jeonbuk_Hyundai_Motors_FC_logo.svg"
+                                width="60">
+                            <p>전북</p>
+                        </div>
+                    </div>
+                    <h3>현대가 더비: 빌드업 경로 집중 분석 중</h3>
+                </div>
+                <div class="live-card-large">
+                    <div class="badge"><span class="dot-live"></span> <b>KBO LIVE</b></div>
+                    <div class="match-vs">
+                        <div class="team"><img src="https://upload.wikimedia.org/wikipedia/ko/c/cc/LG_Twins_logo.svg"
+                                width="60">
+                            <p>LG</p>
+                        </div>
+                        <div class="score">5 : 3</div>
+                        <div class="team"><img src="https://upload.wikimedia.org/wikipedia/ko/a/af/Kia_Tigers_logo.svg"
+                                width="60">
+                            <p>KIA</p>
+                        </div>
+                    </div>
+                    <h3>8회말 투구 분석: 직구 비중 70% 예상</h3>
+                </div>
+                <div class="live-card-large">
+                    <div class="badge"><span class="dot-live"></span> <b>F1 LIVE</b></div>
+                    <div class="match-vs">
+                        <div class="team"><img
+                                src="https://upload.wikimedia.org/wikipedia/en/a/a2/Red_Bull_Racing_logo.svg"
+                                width="100">
+                            <p>레드불</p>
+                        </div>
+                        <div class="score">LAP 42</div>
+                        <div class="team"><img src="https://upload.wikimedia.org/wikipedia/en/d/d1/Ferrari-Logo.svg"
+                                width="50">
+                            <p>페라리</p>
+                        </div>
+                    </div>
+                    <h3>타이어 마모도 데이터: 페라리 피트인 임박</h3>
+                </div>
+            </div>
+            <button class="slide-arrow right" onclick="scrollGrid(this, 'right')">❯</button>
+        </section>
+
+        <section class="tab-section">
+            <div class="league-tabs">
+                <button class="tab-btn active" onclick="filterLive('EPL', this)">EPL</button>
+                <button class="tab-btn" onclick="filterLive('K리그', this)">K리그</button>
+                <button class="tab-btn" onclick="filterLive('KBO', this)">KBO</button>
+                <button class="tab-btn" onclick="filterLive('F1', this)">F1</button>
+            </div>
+            <div class="live-section-wrapper">
+                <button class="slide-arrow left" onclick="scrollGrid2(this, 'left')">❮</button>
+                <div id="live-list" class="live-grid no-scrollbar"></div>
+                <button class="slide-arrow right" onclick="scrollGrid2(this, 'right')">❯</button>
+            </div>
+        </section>
+
+        <section class="league-grid-section">
+            <div class="category-card" onclick="openLeague('EPL')">🏴󠁧󠁢󠁥󠁮󠁧󠁿 EPL</div>
+            <div class="category-card" onclick="openLeague('K리그')">🇰🇷 K리그</div>
+            <div class="category-card" onclick="openLeague('KBO')">⚾ KBO</div>
+            <div class="category-card" onclick="openLeague('F1')">🏎️ F1</div>
+        </section>
+
+        <section class="highlights-section" id="highlights-container"></section>
+    </main>
+
+    <main id="detail-view" class="detail-view hidden">
+        <section id="detail-hero" class="detail-hero">
+            <h1 id="detail-title"></h1>
+            <p id="detail-desc"></p>
+        </section>
+        <section class="standing-container">
+            <h3>시즌 순위표</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>순위</th>
+                        <th>팀명</th>
+                        <th>경기</th>
+                        <th>승점</th>
+                    </tr>
+                </thead>
+                <tbody id="standing-body"></tbody>
+            </table>
+        </section>
+    </main>
+
+    <div id="auth-modal" class="modal-overlay hidden">
+        <div class="modal-backdrop" onclick="closeModal()"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>환영합니다</h2>
+            </div>
+            <div class="modal-body">
+                <form onsubmit="event.preventDefault();" class="auth-form">
+                    <div id="name-field" class="hidden"><input type="text" placeholder="이름"></div>
+                    <input type="email" placeholder="이메일"><input type="password" placeholder="비밀번호">
+                    <button id="auth-submit" class="submit-btn">로그인</button>
+                </form>
+                <button class="link-btn" onclick="toggleAuthMode()" id="toggle-btn"
+                    style="width:100%; margin-top:10px;">회원가입</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="chat-window" class="chat-window hidden">
+        <div class="chat-header"><span>🤖 AI 분석가 <b>스분파</b></span><button class="close-btn"
+                onclick="toggleChat()">✕</button></div>
+        <div id="chat-messages" class="chat-messages no-scrollbar"></div>
+        <div id="chat-options" class="chat-options"></div>
+    </div>
+
+    <button id="float-btn" class="creepy-btn" onclick="toggleChat()">
+        <span class="creepy-btn__eyes">
+            <span class="creepy-btn__eye"><span class="creepy-btn__pupil" id="pupil-l"></span></span>
+            <span class="creepy-btn__eye"><span class="creepy-btn__pupil" id="pupil-r"></span></span>
+        </span>
+        <span class="creepy-btn__cover">AI 분석</span>
+    </button>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
