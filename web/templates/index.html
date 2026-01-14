@@ -2,9 +2,15 @@
 <html lang="ko">
 
 <head>
+
     <meta charset="UTF-8">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <title>SBUNPA - AI 스포츠 플랫폼</title>
-    <link rel="stylesheet" href="style.css">
+
+    <link rel="stylesheet" href="../static/style.css">
+
 </head>
 
 <body>
@@ -14,7 +20,7 @@
             <h1 class="logo shimmer" onclick="goHome()"><i>SBUNPA</i></h1>
             <div class="nav-links">
                 <a href="#" class="active" onclick="goHome()">홈</a>
-                <a href="#about">ⓘ 소개</a>
+                <a href="javascript:void(0)" onclick="goAbout()">ⓘ 소개</a>
             </div>
         </div>
         <div class="nav-right">
@@ -27,65 +33,58 @@
         <section class="carousel-section live-section-wrapper">
             <button class="slide-arrow left" onclick="scrollGrid(this, 'left')">❮</button>
             <div class="carousel-track" id="carousel-track">
-                <div class="live-card-large">
+                <div class="live-card-large"
+                    style="background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('../images/리버플\ vs\ 맨시티.png') no-repeat center/cover !important; border: 1px solid rgba(255,255,255,0.2) !important;">
                     <div class="badge"><span class="dot-live"></span> <b>EPL LIVE</b></div>
                     <div class="match-vs">
-                        <div class="team"><img
-                                src="https://upload.wikimedia.org/wikipedia/en/7/7a/Manchester_City_FC_badge.svg"
-                                width="60">
-                            <p>맨시티</p>
+                        <div class="team"><img src="../images/EPL/리버플.png" width="60">
+                            <p>리버플</p>
                         </div>
                         <div class="score">2 : 1</div>
-                        <div class="team"><img src="https://upload.wikimedia.org/wikipedia/en/c/ce/Arsenal_FC.svg"
-                                width="60">
-                            <p>아스널</p>
+                        <div class="team"><img src="../images/EPL/맨체스터 시티.png" width="60">
+                            <p>맨시티</p>
                         </div>
                     </div>
-                    <h3>AI 전술 분석: 아스널의 하이프레싱 대응 중</h3>
+                    <h3>AI 전술 분석: 리버플의 하이프레싱 대응 중</h3>
                 </div>
-                <div class="live-card-large">
+                <div class="live-card-large"
+                    style="background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('../images/울산 vs 서울.png') no-repeat center/100% 100% !important; border: 1px solid rgba(255,255,255,0.2) !important;">
                     <div class="badge"><span class="dot-live"></span> <b>K리그 LIVE</b></div>
                     <div class="match-vs">
-                        <div class="team"><img src="https://upload.wikimedia.org/wikipedia/ko/d/d7/Ulsan_HD_FC_logo.svg"
-                                width="60">
+                        <div class="team"><img src="../images/kleague/울산 HD FC.png" width="80">
                             <p>울산</p>
                         </div>
                         <div class="score">0 : 0</div>
-                        <div class="team"><img
-                                src="https://upload.wikimedia.org/wikipedia/ko/f/f3/Jeonbuk_Hyundai_Motors_FC_logo.svg"
-                                width="60">
-                            <p>전북</p>
+                        <div class="team"><img src="../images/kleague/FC 서울.png" width="80">
+                            <p>서울</p>
                         </div>
                     </div>
                     <h3>현대가 더비: 빌드업 경로 집중 분석 중</h3>
                 </div>
-                <div class="live-card-large">
+                <div class="live-card-large"
+                    style="background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('../images/SSG vs 롯데.png') no-repeat center/100% 100% !important; border: 1px solid rgba(255,255,255,0.2) !important;">
                     <div class="badge"><span class="dot-live"></span> <b>KBO LIVE</b></div>
                     <div class="match-vs">
-                        <div class="team"><img src="https://upload.wikimedia.org/wikipedia/ko/c/cc/LG_Twins_logo.svg"
-                                width="60">
-                            <p>LG</p>
+                        <div class="team"><img src="../images/KBO/SSG 랜더스.png" width="80">
+                            <p>SSG</p>
                         </div>
                         <div class="score">5 : 3</div>
-                        <div class="team"><img src="https://upload.wikimedia.org/wikipedia/ko/a/af/Kia_Tigers_logo.svg"
-                                width="60">
-                            <p>KIA</p>
+                        <div class="team"><img src="../images/KBO/롯데 자이언츠.png" width="80">
+                            <p>롯데</p>
                         </div>
                     </div>
                     <h3>8회말 투구 분석: 직구 비중 70% 예상</h3>
                 </div>
-                <div class="live-card-large">
+                <div class="live-card-large"
+                    style="background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('../images/벤츠 vs 레드불.png') no-repeat center/100% 100% !important; border: 1px solid rgba(255,255,255,0.2) !important;">
                     <div class="badge"><span class="dot-live"></span> <b>F1 LIVE</b></div>
                     <div class="match-vs">
-                        <div class="team"><img
-                                src="https://upload.wikimedia.org/wikipedia/en/a/a2/Red_Bull_Racing_logo.svg"
-                                width="100">
-                            <p>레드불</p>
+                        <div class="team"><img src="../images/f1/메르세데스.png" width="70">
+                            <p>메르세데스</p>
                         </div>
                         <div class="score">LAP 42</div>
-                        <div class="team"><img src="https://upload.wikimedia.org/wikipedia/en/d/d1/Ferrari-Logo.svg"
-                                width="50">
-                            <p>페라리</p>
+                        <div class="team"><img src="../images/f1/레드불.png" width="70">
+                            <p>레드불</p>
                         </div>
                     </div>
                     <h3>타이어 마모도 데이터: 페라리 피트인 임박</h3>
@@ -96,15 +95,16 @@
 
         <section class="tab-section">
             <div class="league-tabs">
-                <button class="tab-btn active" onclick="filterLive('EPL', this)">EPL</button>
+                <button class="tab-btn active" onclick="filterLive('ALL', this)">전체</button>
+                <button class="tab-btn" onclick="filterLive('EPL', this)">EPL</button>
                 <button class="tab-btn" onclick="filterLive('K리그', this)">K리그</button>
                 <button class="tab-btn" onclick="filterLive('KBO', this)">KBO</button>
                 <button class="tab-btn" onclick="filterLive('F1', this)">F1</button>
             </div>
             <div class="live-section-wrapper">
-                <button class="slide-arrow left" onclick="scrollGrid2(this, 'left')">❮</button>
+                <button class="slide-arrow left" onclick="scrollGrid(this, 'left')">❮</button>
                 <div id="live-list" class="live-grid no-scrollbar"></div>
-                <button class="slide-arrow right" onclick="scrollGrid2(this, 'right')">❯</button>
+                <button class="slide-arrow right" onclick="scrollGrid(this, 'right')">❯</button>
             </div>
         </section>
 
@@ -116,6 +116,20 @@
         </section>
 
         <section class="highlights-section" id="highlights-container"></section>
+    </main>
+
+    <main id="about-view" class="hidden">
+        <section class="about-hero">
+            <h1 class="shimmer">Analyzed Fighter</h1>
+            <p>스포츠를 더 똑똑하게, AI 기술로 찾는 당신의 소울메이트 팀</p>
+        </section>
+
+        <section class="features-grid" id="about-features"></section>
+
+        <section class="team-section">
+            <h2>Our Team</h2>
+            <div class="team-grid" id="about-team"></div>
+        </section>
     </main>
 
     <main id="detail-view" class="detail-view hidden">
@@ -172,7 +186,7 @@
         <span class="creepy-btn__cover">AI 분석</span>
     </button>
 
-    <script src="script.js"></script>
+    <script src="../static/script.js"></script>
 </body>
 
 </html>
