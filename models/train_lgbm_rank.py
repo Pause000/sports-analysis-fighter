@@ -8,6 +8,7 @@ from sentence_transformers import SentenceTransformer
 import warnings
 import joblib
 import matplotlib.pyplot as plt
+from pathlib import Path
 
 # 분리한 평가 모듈 불러오기
 from eval_metrics import calculate_mean_ndcg, plot_feature_importance
@@ -16,7 +17,11 @@ from eval_metrics import calculate_mean_ndcg, plot_feature_importance
 warnings.filterwarnings("ignore")
 plt.rcParams['font.family'] = 'Malgun Gothic'
 
-df = pd.read_csv("final_data.csv")
+# 스크립트 위치 기반 절대 경로 설정
+script_dir = Path(__file__).parent
+data_path = script_dir.parent / "database" / "output" / "final_data.csv"
+
+df = pd.read_csv(data_path)
 df = df[df["llm_rank"] > 0].copy()
 df["relevance"] = df["llm_rank"].map({1: 5, 2: 3, 3: 2}).fillna(0)
 
