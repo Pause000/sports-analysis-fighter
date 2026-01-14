@@ -387,27 +387,17 @@ function showOpts(opts, callback) {
 /* --- [데이터] Figma에서 가져온 리그 및 추천 정보 --- */
 const chatData = {
     leagues: [
-        { id: 'epl', name: '⚽ 프리미어 리그', emoji: '🏴󠁧󠁢󠁥󠁮󠁧󠁿' },
-        { id: 'kleague', name: '⚽ K리그', emoji: '🇰🇷' },
-        { id: 'kbo', name: '⚾ KBO 리그', emoji: '⚾' },
-        { id: 'f1', name: '🏎️ 포뮬러 원', emoji: '🏁' }
+        { id: 'EPL', name: '⚽ 프리미어 리그', emoji: '🏴󠁧󠁢󠁥󠁮󠁧󠁿' },
+        { id: 'K리그', name: '⚽ K리그', emoji: '🇰🇷' },
+        { id: 'KBO', name: '⚾ KBO 리그', emoji: '⚾' },
+        { id: 'F1', name: '🏎️ 포뮬러 원', emoji: '🏁' }
     ],
     vibes: [
         { id: 'aggressive', name: '🔥 공격적인', description: '화끈한 공격 스타일' },
         { id: 'traditional', name: '🏛️ 전통적인', description: '역사와 전통 중시' },
         { id: 'star', name: '⭐ 스타 중심', description: '슈퍼스타 보유 팀' },
         { id: 'underdog', name: '💪 도전자', description: '약자의 반란' }
-    ],
-    // 성향별 추천 팀 데이터 (Figma 로직 반영)
-    recommendations: {
-        epl: {
-            aggressive: { name: '리버풀 FC', slogan: "You'll Never Walk Alone", tags: ['헤비메탈', '압박'], passion: 95, strategy: 85, history: 90, star: 80, money: 75, logo: '🔴' },
-            traditional: { name: '맨체스터 유나이티드', slogan: "Glory Glory Man United", tags: ['전통', '명가'], passion: 80, strategy: 70, history: 100, star: 85, money: 90, logo: '😈' },
-            star: { name: '맨시티', slogan: "Blue Moon", tags: ['월드클래스', '전술'], passion: 75, strategy: 100, history: 60, star: 95, money: 100, logo: '🔵' },
-            underdog: { name: '아스톤 빌라', slogan: "Prepared", tags: ['돌풍', '성장'], passion: 85, strategy: 80, history: 75, star: 65, money: 70, logo: '🦁' }
-        },
-        // (다른 리그 데이터도 유사하게 확장)
-    }
+    ]
 };
 
 let userSelections = { league: '', vibe: '' };
@@ -443,25 +433,57 @@ function askVibe() {
 }
 
 function processAnalysis() {
-    setTimeout(() => {
-        addMsg('bot', '당신의 답변을 바탕으로 AI가 성향을 분석 중입니다...');
-        // 분석 애니메이션 (점 3개)
-        const loadingDiv = document.createElement('div');
-        loadingDiv.className = 'msg-bubble bot-msg';
-        loadingDiv.innerHTML = '<span class="dot"></span><span class="dot"></span><span class="dot"></span>';
-        document.getElementById('chat-messages').appendChild(loadingDiv);
+    addMsg('bot', '당신의 답변을 바탕으로 AI가 성향을 분석 중입니다...');
 
-        setTimeout(() => {
-            loadingDiv.remove();
-            showDashboard();
-        }, 2000);
-    }, 800);
+    // 분석 애니메이션 (점 3개)
+    const loadingDiv = document.createElement('div');
+    loadingDiv.className = 'msg-bubble bot-msg';
+    loadingDiv.id = 'loading-bubble';
+    loadingDiv.innerHTML = '<span class="dot"></span><span class="dot"></span><span class="dot"></span>';
+    document.getElementById('chat-messages').appendChild(loadingDiv);
+
+    // 서버로 데이터 전송
+    fetch('/chat', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userSelections),
+    })
+        .then(response => response.json())
+        .then(data => {
+            const loader = document.getElementById('loading-bubble');
+            if (loader) loader.remove();
+
+            if (data.error) {
+                addMsg('bot', `죄송합니다. 오류가 발생했습니다: ${data.error}`);
+            } else {
+                showDashboard(data);
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            const loader = document.getElementById('loading-bubble');
+            if (loader) loader.remove();
+            addMsg('bot', '서버 통신 중 오류가 발생했습니다.');
+        });
 }
 
 /* --- [결과] 대시보드 표시 (Figma RecommendationDashboard 반영) --- */
-function showDashboard() {
-    const leagueData = chatData.recommendations[userSelections.league] || chatData.recommendations['epl'];
-    const team = leagueData[userSelections.vibe] || leagueData['aggressive'];
+function showDashboard(resultData) {
+    const team = {
+        name: resultData.team_name,
+        slogan: resultData.team_data.introduction ? resultData.team_data.introduction.substring(0, 30) + '...' : "최고의 파트너",
+        tags: resultData.team_data.style_tags ? resultData.team_data.style_tags.slice(0, 2) : ['추천', '팀'],
+        logo: '🏆', // 로고 데이터가 없으면 기본값
+        match: resultData.match_percent,
+        passion: resultData.scores.passion,
+        money: resultData.scores.money,
+        strategy: resultData.scores.strategy,
+        history: resultData.scores.history,
+        star: resultData.scores.star,
+        insight: resultData.insight
+    };
 
     // 챗봇 창을 대시보드 모드로 전환 (크기 확장)
     const chatWin = document.getElementById('chat-window');
