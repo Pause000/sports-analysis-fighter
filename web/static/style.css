@@ -30,6 +30,7 @@ body {
     background: linear-gradient(90deg, var(--primary), #fff, var(--primary));
     background-size: 200%;
     -webkit-background-clip: text;
+    background-clip: text;
     color: transparent;
     animation: shimmer 10s infinite linear;
     cursor: pointer;
@@ -517,7 +518,7 @@ body {
     position: relative;
     overflow: hidden;
     cursor: pointer;
-    border: 1: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     background-position: center center;
     background-size: 100% 100%;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -620,14 +621,13 @@ body {
     border-radius: 16px 16px 4px 16px;
 }
 
-/* 선택지 버튼 컨테이너도 메신저 스타일로 */
+/* 선택지 버튼 컨테이너: 답변 선택지도 오른쪽 정렬 */
 .chat-options {
     padding: 10px 20px 20px;
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
     justify-content: flex-end;
-    /* 답변 선택지도 오른쪽 정렬 */
 }
 
 .chat-header {
@@ -704,13 +704,6 @@ body {
     }
 }
 
-.chat-options {
-    padding: 10px 20px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    justify-content: center;
-}
 
 .opt-btn {
     background: var(--glass);
@@ -721,7 +714,6 @@ body {
     cursor: pointer;
     font-size: 13px;
     animation: popIn 0.3s ease-out forwards;
-    opacity: 0;
 }
 
 .opt-btn:hover {
@@ -876,234 +868,301 @@ body {
     cursor: pointer;
 }
 
-/* --- 챗봇 내 대시보드 스타일 (AI 추천 결과창) --- */
+/* --- [프리미엄 리뉴얼] 챗봇 내 대시보드 스타일 --- */
 .dashboard-container {
-    padding: 30px;
+    padding: 20px;
     color: #fff;
     text-align: left;
-    /* 전체적인 정렬은 왼쪽으로 */
-    background: linear-gradient(180deg, rgba(59, 130, 246, 0.1) 0%, rgba(15, 16, 20, 0) 100%);
+    background: radial-gradient(circle at top right, rgba(59, 130, 246, 0.15), transparent),
+        radial-gradient(circle at bottom left, rgba(59, 130, 246, 0.05), transparent);
     height: 100%;
     display: flex;
     flex-direction: column;
-    gap: 30px;
-    /* 왼쪽과 오른쪽 사이 간격 */
+    gap: 20px;
     overflow-y: auto;
     scrollbar-width: thin;
-    /* 파이어폭스용 */
-    scrollbar-color: transparent transparent;
-    /* 평소엔 투명하게 */
-    transition: scrollbar-color 0.3s;
+    scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
 }
 
-.chat-messages:hover,
-.dashboard-container:hover {
-    scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
-}
-
-/* 크롬/사파리용 스크롤바 */
 .dashboard-container::-webkit-scrollbar {
     width: 6px;
 }
 
 .dashboard-container::-webkit-scrollbar-thumb {
-    background-color: transparent;
+    background-color: rgba(255, 255, 255, 0.1);
     border-radius: 10px;
 }
 
-.dashboard-container:hover::-webkit-scrollbar-thumb {
-    background-color: rgba(255, 255, 255, 0.2);
-}
-
-.match-badge {
-    background: var(--primary);
-    padding: 5px 12px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: bold;
-    display: inline-block;
-    margin-bottom: 10px;
-}
-
-/* 대시보드 내부 레이아웃 보정 */
-/* 1. 헤더 섹션 */
+/* 헤더 섹션: 세련된 타이틀과 일치도 배지 */
 .dash-header {
-    text-align: center;
-    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    position: relative;
+}
+
+.dash-header h2 {
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--primary);
+    margin: 0;
+    opacity: 0.8;
 }
 
 .match-badge {
-    color: #fff;
-    font-size: 15px;
-    margin-bottom: 10px;
+    background: #7b86f5;
+    padding: 6px 20px;
+    /* 🔥 세로를 극단적으로 줄임 */
+    border-radius: 999px;
+    /* pill 유지 */
+    font-size: 18px;
+    /* 폰트 유지 */
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .match-badge span {
-    color: #FFD700;
-
+    color: #fde047;
+    font-size: 22px;
+    margin-right: 4px;
 }
 
+@keyframes glowPulse {
+    0% {
+        box-shadow: 0 0 10px rgba(99, 102, 241, 0.4);
+    }
+
+    50% {
+        box-shadow: 0 0 22px rgba(99, 102, 241, 0.8);
+    }
+
+    100% {
+        box-shadow: 0 0 10px rgba(99, 102, 241, 0.4);
+    }
+}
+
+/* 팀 히어로 존: 로고와 이름의 조화 */
 .team-hero {
+    width: 100%;
     display: flex;
     flex-direction: column;
-    /* 세로 정렬로 변경 */
     align-items: center;
-    justify-content: center;
-    gap: 15px;
-    margin-bottom: 25px;
-    /* 공간 확보 */
-}
-
-/* 첫 번째 줄: 로고 + 팀 이름 */
-.hero-row-top {
-    display: flex;
-    align-items: center;
-    justify-content: center;
     gap: 20px;
 }
 
-/* 두 번째 줄: 슬로건 + 태그 */
-.hero-row-bottom {
+.team-logo-circle {
+    width: 100px;
+    height: 100px;
+    border-radius: 30px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+    border: 1px solid rgba(255, 255, 255, 0.1);
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 15px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.team-name h1 {
-    margin: 0;
+.team-logo-circle:hover {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.team-logo-img {
+    width: 70%;
+    height: 70%;
+    object-fit: contain;
+    filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.3));
+}
+
+.team-info-box {
+    text-align: center;
+}
+
+.team-name {
     font-size: 36px;
-    /* 이름 살짝 키움 */
+    /* 크기 살짝 줄임 */
+    font-weight: 800;
+    margin: 0;
+    background: linear-gradient(to bottom, #fff, #bbb);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -1px;
 }
 
 .team-slogan {
-    color: #888;
-    font-style: italic;
-    margin: 0;
-    /* 마진 제어 */
-    font-size: 15px;
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.6);
+    margin-top: 8px;
+    font-weight: 300;
 }
 
-.team-logo-circle {
-    width: 60px;
-    /* 로고 크기 조정 */
-    height: 60px;
-    background: var(--glass-heavy);
+.tag-row {
     display: flex;
-    border-radius: 50%;
-    margin: 0 !important;
-    /* 마진 오버라이드 제거 */
-    align-items: center;
+    gap: 8px;
+    margin-top: 15px;
     justify-content: center;
-    font-size: 30px;
-    border: 1px solid var(--border);
 }
 
-/* 바디 섹션 (좌우 분할) */
+.tag {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 4px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* 바디 섹션: 정보의 밸런스 */
 .dash-body {
     display: grid;
     grid-template-columns: 1fr 1.2fr;
     gap: 30px;
-    flex-grow: 1;
 }
 
-/* 왼쪽: 차트 및 리스트 */
-.chart-wrapper {
+/* 좌측: 차트 카드 */
+.chart-card {
     background: rgba(255, 255, 255, 0.03);
-    border-radius: 20px;
-    padding: 20px;
-    margin-bottom: 20px;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.special-points {
-    background: rgba(59, 130, 246, 0.05);
-    border-radius: 15px;
-    padding: 20px;
-}
-
-.special-points h3 {
-    font-size: 16px;
-    margin-bottom: 10px;
-    color: #3B82F6;
-}
-
-.special-points ul {
-    list-style: none;
-    padding: 0;
-    font-size: 14px;
-    line-height: 1.8;
-    color: #ccc;
-}
-
-/* 오른쪽: 인사이트 */
-.reason-section h3,
-.insight-box h3 {
-    font-size: 18px;
-    margin-bottom: 15px;
-    border-left: 4px solid #3B82F6;
-    padding-left: 10px;
-}
-
-.reason-cards {
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 25px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    margin-bottom: 25px;
+    gap: 20px;
 }
 
-.r-card {
-    background: rgba(255, 255, 255, 0.05);
-    padding: 12px 20px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    gap: 15px;
+.chart-wrapper {
+    width: 85%;
+    max-width: 280px;
+    aspect-ratio: 1;
+    position: relative;
+    padding: 10px;
+    margin: 0 auto;
+    /* 중앙 정렬 */
 }
 
-.r-card span {
-    background: #3B82F6;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
+.points-list {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
+    flex-direction: column;
+    gap: 12px;
 }
 
-/* 푸터 버튼 */
-.dash-footer {
-    margin-top: auto;
+.point-item {
     display: flex;
-    gap: 10px;
-    justify-content: center;
-    padding-top: 20px;
-}
-
-.action-btn {
-    padding: 10px 20px;
-    border-radius: 10px;
-    border: 1px solid var(--border);
-    background: var(--glass);
-    color: white;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    justify-content: space-between;
     font-size: 13px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.action-btn.primary {
-    background: #3B82F6;
+.point-label {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.point-value {
+    font-weight: 600;
+    color: var(--primary);
+}
+
+/* 우측: 인사이트 & 추천 이유 */
+.insight-card {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.section-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.section-title::before {
+    content: '';
+    width: 3px;
+    height: 16px;
+    background: var(--primary);
+    border-radius: 2px;
+}
+
+.reason-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.reason-item {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 15px;
+    border-radius: 16px;
+    font-size: 14px;
+    line-height: 1.5;
+    border: 1px solid transparent;
+    transition: 0.3s;
+}
+
+.reason-item:hover {
+    background: rgba(59, 130, 246, 0.05);
+    border-color: rgba(59, 130, 246, 0.2);
+    transform: translateX(5px);
+}
+
+.insight-bubble {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(0, 0, 0, 0.2));
+    padding: 20px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 14px;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* 푸터 액션 */
+.dash-footer {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    padding-top: 10px;
+}
+
+.btn-premium {
+    padding: 12px 24px;
+    border-radius: 16px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+}
+
+.btn-premium.primary {
+    background: var(--primary);
     border: none;
+    box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
 }
 
-.action-btn:hover {
-    background: var(--border);
+.btn-premium:hover {
+    transform: translateY(-3px);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.btn-premium.primary:hover {
+    background: #2563eb;
+    box-shadow: 0 12px 25px rgba(59, 130, 246, 0.4);
 }
 
 
