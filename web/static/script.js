@@ -397,18 +397,97 @@ function renderAbout() {
   `).join('');
 }
 
-function openModal(isSignUp) {
+/* --- [A] 인증 (Auth) 관련 함수 --- */
+function openModal(wantSignUp) {
     document.getElementById('auth-modal').classList.remove('hidden');
-    if (isSignUp) toggleAuthMode(true);
+    // Ensure the modal is in the requested state
+    // If wantSignUp is true, ensure we are in SignUp mode.
+    // If wantSignUp is false, ensure we are in Login mode.
+    toggleAuthMode(wantSignUp);
 }
+
 function closeModal() {
     document.getElementById('auth-modal').classList.add('hidden');
 }
+
 function toggleAuthMode(forceSignUp) {
-    const isSignUp = forceSignUp || document.getElementById('auth-submit').innerText === '로그인';
-    document.getElementById('auth-submit').innerText = isSignUp ? '회원가입' : '로그인';
-    document.getElementById('name-field').classList.toggle('hidden', !isSignUp);
-    document.getElementById('toggle-btn').innerText = isSignUp ? '로그인' : '회원가입';
+    const submitBtn = document.getElementById('auth-submit');
+    const nameField = document.getElementById('name-field');
+    const toggleBtn = document.getElementById('toggle-btn');
+
+    let isSignUp;
+    if (typeof forceSignUp === 'boolean') {
+        isSignUp = forceSignUp;
+    } else {
+        // Toggle based on current text. If '로그인', switch to SignUp.
+        isSignUp = submitBtn.innerText === '로그인';
+    }
+
+    submitBtn.innerText = isSignUp ? '회원가입' : '로그인';
+    nameField.classList.toggle('hidden', !isSignUp);
+    toggleBtn.innerText = isSignUp ? '로그인' : '회원가입';
+}
+
+async function handleAuthSubmit() {
+    const form = document.getElementById('auth-form');
+    if (!form) return;
+
+    const nameInput = document.querySelector('#name-field input');
+    const emailInput = form.querySelector('input[type="email"]');
+    const pwInput = form.querySelector('input[type="password"]');
+
+    const email = emailInput.value.trim();
+    const password = pwInput.value.trim();
+
+    // Check if name field is visible to determine mode
+    const isSignUp = !document.getElementById('name-field').classList.contains('hidden');
+    const name = nameInput.value.trim();
+
+    if (!email || !password) {
+        alert("이메일과 비밀번호를 입력해주세요.");
+        return;
+    }
+    if (isSignUp && !name) {
+        alert("이름을 입력해주세요.");
+        return;
+    }
+
+    const endpoint = isSignUp ? '/api/register' : '/api/login';
+    const payload = isSignUp ? { email, password, name } : { email, password };
+
+    try {
+        const res = await fetch(endpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+
+        if (res.ok) {
+            alert(data.message);
+            location.reload();
+        } else {
+            alert("오류: " + (data.error || "알 수 없는 오류"));
+        }
+    } catch (err) {
+        console.error(err);
+        alert("서버 통신 오류가 발생했습니다.");
+    }
+}
+
+async function logout() {
+    if (!confirm("로그아웃 하시겠습니까?")) return;
+    try {
+        const res = await fetch('/api/logout', { method: 'POST' });
+        if (res.ok) {
+            alert("로그아웃 되었습니다.");
+            location.reload();
+        } else {
+            alert("로그아웃 실패");
+        }
+    } catch (err) {
+        console.error(err);
+    }
 }
 
 
