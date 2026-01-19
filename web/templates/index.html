@@ -23,6 +23,10 @@
         </div>
     </div>
     <div class="nav-right">
+<<<<<<< HEAD
+        <button class="login-btn" onclick="openModal(false)">로그인</button>
+        <button class="glass-btn" onclick="openModal(true)">회원가입</button>
+=======
         {% if user.is_authenticated %}
         <span style="color: white; margin-right: 15px; font-weight: bold;">{{ user.name }}님</span>
         <button class="login-btn" onclick="location.href='/logout'">로그아웃</button>
@@ -30,6 +34,7 @@
         <button class="login-btn" onclick="location.href='/login'">로그인</button>
         <button class="glass-btn" onclick="location.href='/register'">회원가입</button>
         {% endif %}
+>>>>>>> 6f0025b2d215fd02f2c03dfdd142fc66b01cd04f
     </div>
 </nav>
 
@@ -109,6 +114,89 @@
             <button class="slide-arrow left" onclick="scrollGrid(this, 'left')">❮</button>
             <div id="live-list" class="live-grid no-scrollbar"></div>
             <button class="slide-arrow right" onclick="scrollGrid(this, 'right')">❯</button>
+<<<<<<< HEAD
+        </div>
+    </section>
+
+    <section class="league-grid-section">
+        <div class="category-card" onclick="openLeague('EPL')">🏴󠁧󠁢󠁥󠁮󠁧󠁿 EPL</div>
+        <div class="category-card" onclick="openLeague('K리그')">🇰🇷 K리그</div>
+        <div class="category-card" onclick="openLeague('KBO')">⚾ KBO</div>
+        <div class="category-card" onclick="openLeague('F1')">🏎️ F1</div>
+    </section>
+
+    <section class="highlights-section" id="highlights-container"></section>
+</main>
+
+<main id="about-view" class="hidden">
+    <section class="about-hero">
+        <h1 class="shimmer">Analyzed Fighter</h1>
+        <p>스포츠를 더 똑똑하게, AI 기술로 찾는 당신의 소울메이트 팀</p>
+    </section>
+
+    <section class="features-grid" id="about-features"></section>
+
+    <section class="team-section">
+        <h2>Our Team</h2>
+        <div class="team-grid" id="about-team"></div>
+    </section>
+</main>
+
+<main id="detail-view" class="detail-view hidden">
+    <section id="detail-hero" class="detail-hero">
+        <h1 id="detail-title"></h1>
+        <p id="detail-desc"></p>
+    </section>
+    <section class="standing-container">
+        <h3>시즌 순위표</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>순위</th>
+                    <th>팀명</th>
+                    <th>경기</th>
+                    <th>승점</th>
+                </tr>
+            </thead>
+            <tbody id="standing-body"></tbody>
+        </table>
+    </section>
+</main>
+
+<div id="auth-modal" class="modal-overlay hidden">
+    <div class="modal-backdrop" onclick="closeModal()"></div>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>환영합니다</h2>
+        </div>
+        <div class="modal-body">
+            <form onsubmit="event.preventDefault();" class="auth-form">
+                <div id="name-field" class="hidden"><input type="text" placeholder="이름"></div>
+                <input type="email" placeholder="이메일"><input type="password" placeholder="비밀번호">
+                <button id="auth-submit" class="submit-btn">로그인</button>
+            </form>
+            <button class="link-btn" onclick="toggleAuthMode()" id="toggle-btn"
+                style="width:100%; margin-top:10px;">회원가입</button>
+        </div>
+    </div>
+</div>
+
+<div id="chat-window" class="chat-window hidden">
+    <div class="chat-header"><span>🤖 AI 분석가 <b>스분파</b></span><button class="close-btn"
+            onclick="toggleChat()">✕</button></div>
+    <div id="chat-messages" class="chat-messages no-scrollbar"></div>
+    <div id="chat-options" class="chat-options"></div>
+</div>
+
+<button id="float-btn" class="creepy-btn" onclick="toggleChat()">
+    <span class="creepy-btn__eyes">
+        <span class="creepy-btn__eye"><span class="creepy-btn__pupil" id="pupil-l"></span></span>
+        <span class="creepy-btn__eye"><span class="creepy-btn__pupil" id="pupil-r"></span></span>
+    </span>
+    <span class="creepy-btn__cover">AI 분석</span>
+</button>
+
+=======
         </div>
     </section>
 
@@ -174,6 +262,7 @@
     <span class="creepy-btn__cover">AI 분석</span>
 </button>
 
+>>>>>>> 6f0025b2d215fd02f2c03dfdd142fc66b01cd04f
 <script src="../static/script.js"></script>
 </body>
 

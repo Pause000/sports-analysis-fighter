@@ -1,7 +1,10 @@
 from flask import Flask, render_template, request, jsonify, send_from_directory
+<<<<<<< HEAD
+=======
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
+>>>>>>> 6f0025b2d215fd02f2c03dfdd142fc66b01cd04f
 import os
 import json
 import pandas as pd
@@ -13,15 +16,28 @@ from node2vec import Node2Vec
 from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
 
+<<<<<<< HEAD
+=======
 # 환경 변수 로드 (.env 파일에서 DB 정보 등을 가져옴)
 from dotenv import load_dotenv
 load_dotenv()
 
+>>>>>>> 6f0025b2d215fd02f2c03dfdd142fc66b01cd04f
 warnings.filterwarnings("ignore")
 
 app = Flask(__name__, static_folder='web/static', template_folder='web/templates')
 
 # ---------------------------------------------------------
+<<<<<<< HEAD
+# 1. 아티팩트 및 환경 설정
+# ---------------------------------------------------------
+# 실행 위치에 따라 조정 필요할 수 있음. 현재는 프로젝트 루트 실행 가정.
+DATA_DIR = 'C:\\python\\team_project\\sports-analysis-fighter\\JSON'
+MODEL_PATH = 'sports_chatbot_model50.joblib'
+
+# 모델 로딩 (전역 변수로 한 번만 로드)
+print("🔍 SBERT 모델(KR-SBERT) 로딩 중...")
+=======
 # ✅ 데이터베이스 및 로그인 설정
 # ---------------------------------------------------------
 
@@ -91,6 +107,7 @@ MODEL_PATH = './sports_chatbot_model50.joblib'
 # 모델 로딩 (전역 변수로 한 번만 로드)
 print("🔍 SBERT 모델(KR-SBERT) 로딩 중...")
  
+>>>>>>> 6f0025b2d215fd02f2c03dfdd142fc66b01cd04f
 try:
     model_nlp = SentenceTransformer('snunlp/KR-SBERT-V40K-klueNLI-augSTS')
 except Exception as e:
@@ -285,6 +302,18 @@ def recommend_service_logic(query, user_type, support_team, target_league):
     # Sort
     df_result = df_inf.sort_values(by='final_hybrid_score', ascending=False)
     
+<<<<<<< HEAD
+    # Return top 1 result (or list) as dict
+    top_team = df_result.iloc[0]
+    
+    return {
+        "team_name": top_team['matching_team'],
+        "score": float(top_team['final_hybrid_score']),
+        "match_percent": int(top_team['manual_match_score'] * 100) if top_team['manual_match_score'] > 0 else 0, # Simple converting
+        "team_data": top_team['team_data'],
+        "scores": {
+            # ✅ 레이더 차트 6개 축에 맞게 스코어를 매핑합니다. (각 항목 20점 만점 -> 100점 스케일)
+=======
     # Return top 3 results
     top_team = df_result.iloc[0]
     
@@ -307,21 +336,30 @@ def recommend_service_logic(query, user_type, support_team, target_league):
         "match_percent": int(top_team['manual_match_score'] * 100) if top_team['manual_match_score'] > 0 else 0,
         "team_data": top_team['team_data'],
         "scores": {
+>>>>>>> 6f0025b2d215fd02f2c03dfdd142fc66b01cd04f
             "passion": top_team['team_data']['scores'].get('fan_passion', 50) / 20 * 100,
             "money": top_team['team_data']['scores'].get('money', 50) / 20 * 100,
             "strategy": top_team['team_data']['scores'].get('attack_style', 50) / 20 * 100,
             "history": top_team['team_data']['scores'].get('tradition', 50) / 20 * 100,
             "star": top_team['team_data']['scores'].get('star_power', 50) / 20 * 100,
+<<<<<<< HEAD
+            "vibe": top_team['team_data']['scores'].get('underdog_feel', 50) / 20 * 100  # '감성' 축으로 underdog_feel 매핑
+        },
+        "insight": top_team['team_data'].get('introduction', '추천 팀에 대한 설명이 없습니다.')
+=======
             "vibe": top_team['team_data']['scores'].get('underdog_feel', 50) / 20 * 100
         },
         "insight": top_team['team_data'].get('meta_description') or top_team['team_data'].get('introduction') or '추천 팀에 대한 설명이 없습니다.',
         "others": others # ✅ 2,3등 정보 추가
+>>>>>>> 6f0025b2d215fd02f2c03dfdd142fc66b01cd04f
     }
 
 
 # ---------------------------------------------------------
 # Flask 라우트
 # ---------------------------------------------------------
+<<<<<<< HEAD
+=======
 # ---------------------------------------------------------
 # Flask 라우트 (인증 관련 추가)
 # ---------------------------------------------------------
@@ -416,15 +454,21 @@ def auth_status():
     else:
         return jsonify({"is_authenticated": False})
 
+>>>>>>> 6f0025b2d215fd02f2c03dfdd142fc66b01cd04f
 @app.before_request
 def startup():
     if final_model is None:
         load_resources()
 
 @app.route('/')
+<<<<<<< HEAD
+def index():
+    return render_template('index.html')
+=======
 @login_required
 def index():
     return render_template('index.html', user=current_user)
+>>>>>>> 6f0025b2d215fd02f2c03dfdd142fc66b01cd04f
 
 @app.route('/images/<path:filename>')
 def serve_images(filename):
@@ -499,10 +543,13 @@ def chat():
 
 if __name__ == '__main__':
     # 로컬 개발용
+<<<<<<< HEAD
+=======
     # 로컬 개발용
     with app.app_context():
         db.create_all()
         print("✅ 데이터베이스 초기화 및 연결 확인 완료 (MySQL user_info 테이블)")
 
+>>>>>>> 6f0025b2d215fd02f2c03dfdd142fc66b01cd04f
     load_resources() # Run immediately for dev
     app.run(host='0.0.0.0', port=5000, debug=True)

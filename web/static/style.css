@@ -912,6 +912,24 @@ body {
 }
 
 .match-badge {
+<<<<<<< HEAD
+    background: rgba(59, 130, 246, 0.1);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    padding: 8px 18px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    backdrop-filter: blur(5px);
+}
+
+.match-badge span {
+    color: var(--primary);
+    font-size: 20px;
+    margin-right: 2px;
+}
+
+=======
     background: #7b86f5;
     padding: 6px 20px;
     /* 🔥 세로를 극단적으로 줄임 */
@@ -947,6 +965,7 @@ body {
     }
 }
 
+>>>>>>> 6f0025b2d215fd02f2c03dfdd142fc66b01cd04f
 /* 팀 히어로 존: 로고와 이름의 조화 */
 .team-hero {
     width: 100%;
