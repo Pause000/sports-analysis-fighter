@@ -18,11 +18,13 @@ app = Flask(__name__, static_folder='web/static', template_folder='web/templates
 # 1. 아티팩트 및 환경 설정
 # ---------------------------------------------------------
 # 실행 위치에 따라 조정 필요할 수 있음. 현재는 프로젝트 루트 실행 가정.
-DATA_DIR = 'C:\\work\\Project\\sports-analysis-fighter\\JSON'
-MODEL_PATH = 'sports_chatbot_model50.joblib'
+# 주소를 고쳐야합니다.
+DATA_DIR = './JSON'
+MODEL_PATH = './sports_chatbot_model50.joblib'
 
 # 모델 로딩 (전역 변수로 한 번만 로드)
 print("🔍 SBERT 모델(KR-SBERT) 로딩 중...")
+ 
 try:
     model_nlp = SentenceTransformer('snunlp/KR-SBERT-V40K-klueNLI-augSTS')
 except Exception as e:

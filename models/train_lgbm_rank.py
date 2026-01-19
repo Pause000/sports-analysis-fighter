@@ -38,7 +38,7 @@ test_qs = test_df["query"].unique()
 train_emb = sbert.encode(train_qs)
 test_emb = sbert.encode(test_qs)
 
-pca = PCA(n_components=5, random_state=42)
+pca = PCA(n_components = 5, random_state=42)
 train_pca_vals = pca.fit_transform(train_emb)
 test_pca_vals = pca.transform(test_emb)
 
@@ -51,9 +51,9 @@ test_df[pca_named_cols] = pd.DataFrame(test_df["query"].map(test_q_map).tolist()
 
 # 마스터 팀 명단 기반 LabelEncoder
 master_team_list = [
-    "아스널", "아스톤 빌라", "본머스", "브렌트포드", "브라이튼", "첼시", "크리스탈 팰리스", 
-    "에버턴", "풀럼", "입스위치 타운", "레스터 시티", "리버풀", "맨체스터 시티", "맨체스터 유나이티드", 
-    "뉴캐슬 유나이티드", "노팅엄 포레스트", "사우샘프턴", "토트넘 홋스퍼", "웨스트햄 유나이티드", "울버햄튼 원더러스",
+    "아스널", "아스톤 빌라", "브라이튼", "첼시", "크리스탈 팰리스", 
+    "리버풀", "맨체스터 시티", "맨체스터 유나이티드", 
+    "뉴캐슬 유나이티드", "토트넘 홋스퍼", "웨스트햄 유나이티드", "울버햄튼 원더러스",
     "LG 트윈스", "KT 위즈", "SSG 랜더스", "NC 다이노스", "두산 베어스", "기아 타이거즈", 
     "롯데 자이언츠", "삼성 라이온즈", "한화 이글스", "키움 히어로즈",
     "울산 HD FC", "포항 스틸러스", "광주FC", "전북 현대 모터스", "대구FC", "인천 유나이티드", 
