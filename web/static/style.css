@@ -912,6 +912,7 @@ body {
 }
 
 .match-badge {
+<<<<<<< HEAD
     background: rgba(59, 130, 246, 0.1);
     border: 1px solid rgba(59, 130, 246, 0.3);
     padding: 8px 18px;
@@ -928,6 +929,43 @@ body {
     margin-right: 2px;
 }
 
+=======
+    background: #7b86f5;
+    padding: 6px 20px;
+    /* 🔥 세로를 극단적으로 줄임 */
+    border-radius: 999px;
+    /* pill 유지 */
+    font-size: 18px;
+    /* 폰트 유지 */
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.match-badge span {
+    color: #fde047;
+    font-size: 22px;
+    margin-right: 4px;
+}
+
+@keyframes glowPulse {
+    0% {
+        box-shadow: 0 0 10px rgba(99, 102, 241, 0.4);
+    }
+
+    50% {
+        box-shadow: 0 0 22px rgba(99, 102, 241, 0.8);
+    }
+
+    100% {
+        box-shadow: 0 0 10px rgba(99, 102, 241, 0.4);
+    }
+}
+
+>>>>>>> 6f0025b2d215fd02f2c03dfdd142fc66b01cd04f
 /* 팀 히어로 존: 로고와 이름의 조화 */
 .team-hero {
     width: 100%;

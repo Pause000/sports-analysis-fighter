@@ -1,4 +1,10 @@
 from flask import Flask, render_template, request, jsonify, send_from_directory
+<<<<<<< HEAD
+=======
+from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+from werkzeug.security import generate_password_hash, check_password_hash
+>>>>>>> 6f0025b2d215fd02f2c03dfdd142fc66b01cd04f
 import os
 import json
 import pandas as pd
@@ -10,11 +16,19 @@ from node2vec import Node2Vec
 from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
 
+<<<<<<< HEAD
+=======
+# 환경 변수 로드 (.env 파일에서 DB 정보 등을 가져옴)
+from dotenv import load_dotenv
+load_dotenv()
+
+>>>>>>> 6f0025b2d215fd02f2c03dfdd142fc66b01cd04f
 warnings.filterwarnings("ignore")
 
 app = Flask(__name__, static_folder='web/static', template_folder='web/templates')
 
 # ---------------------------------------------------------
+<<<<<<< HEAD
 # 1. 아티팩트 및 환경 설정
 # ---------------------------------------------------------
 # 실행 위치에 따라 조정 필요할 수 있음. 현재는 프로젝트 루트 실행 가정.
@@ -23,6 +37,77 @@ MODEL_PATH = 'sports_chatbot_model50.joblib'
 
 # 모델 로딩 (전역 변수로 한 번만 로드)
 print("🔍 SBERT 모델(KR-SBERT) 로딩 중...")
+=======
+# ✅ 데이터베이스 및 로그인 설정
+# ---------------------------------------------------------
+
+# MySQL 데이터베이스 연결 설정
+# .env 파일에 정의된 호스트, 포트, 유저, 비밀번호, DB 이름을 가져와서 연결 문자열 생성
+# 형식: mysql+pymysql://유저아이디:비밀번호@호스트:포트/데이터베이스이름
+DB_USER = os.getenv('DB_USER')
+DB_PASSWORD = os.getenv('DB_PASSWORD')
+DB_HOST = os.getenv('DB_HOST')
+DB_PORT = os.getenv('DB_PORT', '3306') # 포트가 없으면 기본값 3306 사용
+DB_NAME = os.getenv('DB_NAME')
+
+app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+
+# 보안을 위한 비밀 키 설정 (세션 관리 등에 사용)
+app.config['SECRET_KEY'] = 'dev-secret-key-1234' 
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False # 불필요한 이벤트 추적 비활성화 (성능 향상)
+
+db = SQLAlchemy(app)
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login' # 로그인이 안 된 유저가 접근하면 'login' 라우트로 리다이렉트
+
+# ✅ User 모델 정의 (MySQL 'user_info' 테이블과 매핑)
+import datetime
+
+# ✅ User 모델 정의 (MySQL 'user_info' 테이블과 매핑)
+# ✅ User 모델 정의 (MySQL 'users_info' 테이블과 매핑)
+class User(UserMixin, db.Model):
+    # 테이블 이름을 'users_info'로 명시적으로 지정 (사용자 요청 반영)
+    __tablename__ = 'users_info' 
+
+    # 스키마 요구사항: user_id(PK), id(Login ID), pwd, email, name, created_date
+    user_id = db.Column(db.Integer, primary_key=True, autoincrement=True) # 고유 번호 (PK)
+    id = db.Column(db.String(50), unique=True, nullable=False) # 로그인 아이디
+    pwd = db.Column(db.String(256), nullable=False) # 암호화된 비밀번호
+    email = db.Column(db.String(120), unique=True, nullable=False) # 이메일
+    name = db.Column(db.String(100), nullable=False) # 사용자 이름
+    created_date = db.Column(db.DateTime, default=datetime.datetime.utcnow) # 가입일
+
+    # 비밀번호 설정 함수 (입력받은 비밀번호를 암호화하여 저장)
+    def set_password(self, password):
+        self.pwd = generate_password_hash(password)
+
+    # 비밀번호 확인 함수 (입력받은 비밀번호와 저장된 암호화 비밀번호 비교)
+    def check_password(self, password):
+        return check_password_hash(self.pwd, password)
+    
+    # Flask-Login용 get_id override (로그인 ID인 'id' 컬럼을 세션 키로 사용)
+    def get_id(self):
+        return self.id
+
+# 로그인 세션을 위한 사용자 로드 함수
+@login_manager.user_loader
+def load_user(user_id):
+    # get_id가 로그인 ID(문자열)를 반환하므로, id 컬럼으로 조회
+    return User.query.filter_by(id=user_id).first()
+
+# ---------------------------------------------------------
+# 1. 아티팩트 및 환경 설정
+# ---------------------------------------------------------
+# 실행 위치에 따라 조정 필요할 수 있음. 현재는 프로젝트 루트 실행 가정.
+# 주소를 고쳐야합니다.
+DATA_DIR = './JSON'
+MODEL_PATH = './sports_chatbot_model50.joblib'
+
+# 모델 로딩 (전역 변수로 한 번만 로드)
+print("🔍 SBERT 모델(KR-SBERT) 로딩 중...")
+ 
+>>>>>>> 6f0025b2d215fd02f2c03dfdd142fc66b01cd04f
 try:
     model_nlp = SentenceTransformer('snunlp/KR-SBERT-V40K-klueNLI-augSTS')
 except Exception as e:
@@ -217,6 +302,7 @@ def recommend_service_logic(query, user_type, support_team, target_league):
     # Sort
     df_result = df_inf.sort_values(by='final_hybrid_score', ascending=False)
     
+<<<<<<< HEAD
     # Return top 1 result (or list) as dict
     top_team = df_result.iloc[0]
     
@@ -227,28 +313,162 @@ def recommend_service_logic(query, user_type, support_team, target_league):
         "team_data": top_team['team_data'],
         "scores": {
             # ✅ 레이더 차트 6개 축에 맞게 스코어를 매핑합니다. (각 항목 20점 만점 -> 100점 스케일)
+=======
+    # Return top 3 results
+    top_team = df_result.iloc[0]
+    
+    # 2등, 3등 추출 (데이터가 충분할 경우)
+    others = []
+    if len(df_result) > 1:
+        for i in range(1, min(3, len(df_result))):
+            row = df_result.iloc[i]
+            others.append({
+                "name": row['matching_team'],
+                "match_percent": int(row['manual_match_score'] * 100) if row['manual_match_score'] > 0 else 0,
+                "slogan": row['team_data'].get('introduction', '')[:20] + "..." if row['team_data'].get('introduction') else "",
+                "score": float(row['final_hybrid_score'])
+            })
+
+    return {
+        "team_name": top_team['matching_team'],
+        "score": float(top_team['final_hybrid_score']),
+        # 100점 만점 환산 (단순 예시)
+        "match_percent": int(top_team['manual_match_score'] * 100) if top_team['manual_match_score'] > 0 else 0,
+        "team_data": top_team['team_data'],
+        "scores": {
+>>>>>>> 6f0025b2d215fd02f2c03dfdd142fc66b01cd04f
             "passion": top_team['team_data']['scores'].get('fan_passion', 50) / 20 * 100,
             "money": top_team['team_data']['scores'].get('money', 50) / 20 * 100,
             "strategy": top_team['team_data']['scores'].get('attack_style', 50) / 20 * 100,
             "history": top_team['team_data']['scores'].get('tradition', 50) / 20 * 100,
             "star": top_team['team_data']['scores'].get('star_power', 50) / 20 * 100,
+<<<<<<< HEAD
             "vibe": top_team['team_data']['scores'].get('underdog_feel', 50) / 20 * 100  # '감성' 축으로 underdog_feel 매핑
         },
         "insight": top_team['team_data'].get('introduction', '추천 팀에 대한 설명이 없습니다.')
+=======
+            "vibe": top_team['team_data']['scores'].get('underdog_feel', 50) / 20 * 100
+        },
+        "insight": top_team['team_data'].get('meta_description') or top_team['team_data'].get('introduction') or '추천 팀에 대한 설명이 없습니다.',
+        "others": others # ✅ 2,3등 정보 추가
+>>>>>>> 6f0025b2d215fd02f2c03dfdd142fc66b01cd04f
     }
 
 
 # ---------------------------------------------------------
 # Flask 라우트
 # ---------------------------------------------------------
+<<<<<<< HEAD
+=======
+# ---------------------------------------------------------
+# Flask 라우트 (인증 관련 추가)
+# ---------------------------------------------------------
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'GET':
+        return render_template('register.html')
+
+    try:
+        # 폼 데이터 또는 JSON 데이터 처리
+        if request.is_json:
+            data = request.get_json()
+        else:
+            data = request.form
+
+        user_id = data.get('id')
+        password = data.get('pwd') # HTML form name='pwd' 가정
+        email = data.get('email')
+        name = data.get('name')
+
+        if not user_id or not password:
+            return jsonify({"error": "아이디와 비밀번호는 필수입니다."}), 400
+
+        # 중복 체크
+        if User.query.filter_by(id=user_id).first():
+             return jsonify({"error": "이미 존재하는 아이디입니다."}), 400
+        if User.query.filter_by(email=email).first():
+            return jsonify({"error": "이미 존재하는 이메일입니다."}), 400
+
+        # user_id(PK)는 자동생성되므로 id(로그인 아이디)만 넘겨줌
+        new_user = User(id=user_id, email=email, name=name)
+        new_user.set_password(password)
+        
+        db.session.add(new_user)
+        db.session.commit()
+
+        login_user(new_user)
+        
+        # 폼 요청이면 리다이렉트, JSON 요청이면 JSON 응답
+        if not request.is_json:
+            return render_template('index.html', user=new_user)
+            
+        return jsonify({"message": "회원가입 성공", "user": {"id": user_id, "name": name}})
+    except Exception as e:
+        print(f"Register Error: {e}")
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'GET':
+        return render_template('login.html')
+
+    try:
+        if request.is_json:
+            data = request.get_json()
+            user_id = data.get('id')
+            password = data.get('pwd')
+        else:
+            user_id = request.form.get('id') # Form data
+            password = request.form.get('pwd')
+
+        user = User.query.filter_by(id=user_id).first()
+
+        if user and user.check_password(password):
+            login_user(user)
+            
+            if not request.is_json:
+                 return render_template('index.html', user=user)
+
+            return jsonify({"message": "로그인 성공", "user": {"id": user.id, "name": user.name}})
+        
+        if not request.is_json:
+            return render_template('login.html', error="아이디 또는 비밀번호가 올바르지 않습니다.")
+
+        return jsonify({"error": "아이디 또는 비밀번호가 올바르지 않습니다."}), 401
+    except Exception as e:
+        print(f"Login Error: {e}")
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/logout', methods=['GET', 'POST']) # GET도 허용 (링크로 로그아웃 시)
+@login_required
+def logout():
+    logout_user()
+    if not request.is_json:
+        return render_template('index.html', user=None)
+    return jsonify({"message": "로그아웃 성공"})
+
+@app.route('/api/status')
+def auth_status():
+    if current_user.is_authenticated:
+        return jsonify({"is_authenticated": True, "user": {"email": current_user.email, "name": current_user.name}})
+    else:
+        return jsonify({"is_authenticated": False})
+
+>>>>>>> 6f0025b2d215fd02f2c03dfdd142fc66b01cd04f
 @app.before_request
 def startup():
     if final_model is None:
         load_resources()
 
 @app.route('/')
+<<<<<<< HEAD
 def index():
     return render_template('index.html')
+=======
+@login_required
+def index():
+    return render_template('index.html', user=current_user)
+>>>>>>> 6f0025b2d215fd02f2c03dfdd142fc66b01cd04f
 
 @app.route('/images/<path:filename>')
 def serve_images(filename):
@@ -323,5 +543,13 @@ def chat():
 
 if __name__ == '__main__':
     # 로컬 개발용
+<<<<<<< HEAD
+=======
+    # 로컬 개발용
+    with app.app_context():
+        db.create_all()
+        print("✅ 데이터베이스 초기화 및 연결 확인 완료 (MySQL user_info 테이블)")
+
+>>>>>>> 6f0025b2d215fd02f2c03dfdd142fc66b01cd04f
     load_resources() # Run immediately for dev
     app.run(host='0.0.0.0', port=5000, debug=True)
