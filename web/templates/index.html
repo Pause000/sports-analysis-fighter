@@ -13,180 +13,179 @@
 
 </head>
 
-<body>
 
-    <nav class="navbar">
-        <div class="nav-left">
-            <h1 class="logo shimmer" onclick="goHome()"><i>SBUNPA</i></h1>
-            <div class="nav-links">
-                <a href="#" class="active" onclick="goHome()">홈</a>
-                <a href="javascript:void(0)" onclick="goAbout()">ⓘ 소개</a>
+<nav class="navbar">
+    <div class="nav-left">
+        <h1 class="logo shimmer" onclick="goHome()"><i>SBUNPA</i></h1>
+        <div class="nav-links">
+            <a href="#" class="active" onclick="goHome()">홈</a>
+            <a href="javascript:void(0)" onclick="goAbout()">ⓘ 소개</a>
+        </div>
+    </div>
+    <div class="nav-right">
+        <button class="login-btn" onclick="openModal(false)">로그인</button>
+        <button class="glass-btn" onclick="openModal(true)">회원가입</button>
+    </div>
+</nav>
+
+<main id="home-view">
+    <section class="carousel-section live-section-wrapper">
+        <button class="slide-arrow left" onclick="scrollGrid(this, 'left')">❮</button>
+        <div class="carousel-track" id="carousel-track">
+            <div class="live-card-large"
+                style="background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('../images/리버플\ vs\ 맨시티.png') no-repeat center/cover !important; border: 1px solid rgba(255,255,255,0.2) !important;">
+                <div class="badge"><span class="dot-live"></span> <b>EPL LIVE</b></div>
+                <div class="match-vs">
+                    <div class="team"><img src="../images/EPL/리버풀.png" width="60">
+                        <p>리버플</p>
+                    </div>
+                    <div class="score">2 : 1</div>
+                    <div class="team"><img src="../images/EPL/맨체스터 시티.png" width="60">
+                        <p>맨시티</p>
+                    </div>
+                </div>
+                <h3>AI 전술 분석: 리버플의 하이프레싱 대응 중</h3>
+            </div>
+            <div class="live-card-large"
+                style="background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('../images/울산 vs 서울.png') no-repeat center/100% 100% !important; border: 1px solid rgba(255,255,255,0.2) !important;">
+                <div class="badge"><span class="dot-live"></span> <b>K리그 LIVE</b></div>
+                <div class="match-vs">
+                    <div class="team"><img src="../images/kleague/울산 HD FC.png" width="80">
+                        <p>울산</p>
+                    </div>
+                    <div class="score">0 : 0</div>
+                    <div class="team"><img src="../images/kleague/FC 서울.png" width="80">
+                        <p>서울</p>
+                    </div>
+                </div>
+                <h3>현대가 더비: 빌드업 경로 집중 분석 중</h3>
+            </div>
+            <div class="live-card-large"
+                style="background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('../images/SSG vs 롯데.png') no-repeat center/100% 100% !important; border: 1px solid rgba(255,255,255,0.2) !important;">
+                <div class="badge"><span class="dot-live"></span> <b>KBO LIVE</b></div>
+                <div class="match-vs">
+                    <div class="team"><img src="../images/KBO/SSG 랜더스.png" width="80">
+                        <p>SSG</p>
+                    </div>
+                    <div class="score">5 : 3</div>
+                    <div class="team"><img src="../images/KBO/롯데 자이언츠.png" width="80">
+                        <p>롯데</p>
+                    </div>
+                </div>
+                <h3>8회말 투구 분석: 직구 비중 70% 예상</h3>
+            </div>
+            <div class="live-card-large"
+                style="background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('../images/벤츠 vs 레드불.png') no-repeat center/100% 100% !important; border: 1px solid rgba(255,255,255,0.2) !important;">
+                <div class="badge"><span class="dot-live"></span> <b>F1 LIVE</b></div>
+                <div class="match-vs">
+                    <div class="team"><img src="../images/F1/메르세데스.png" width="70">
+                        <p>메르세데스</p>
+                    </div>
+                    <div class="score">LAP 42</div>
+                    <div class="team"><img src="../images/F1/레드불.png" width="70">
+                        <p>레드불</p>
+                    </div>
+                </div>
+                <h3>타이어 마모도 데이터: 페라리 피트인 임박</h3>
             </div>
         </div>
-        <div class="nav-right">
-            <button class="login-btn" onclick="openModal(false)">로그인</button>
-            <button class="glass-btn" onclick="openModal(true)">회원가입</button>
-        </div>
-    </nav>
+        <button class="slide-arrow right" onclick="scrollGrid(this, 'right')">❯</button>
+    </section>
 
-    <main id="home-view">
-        <section class="carousel-section live-section-wrapper">
+    <section class="tab-section">
+        <div class="league-tabs">
+            <button class="tab-btn active" onclick="filterLive('ALL', this)">전체</button>
+            <button class="tab-btn" onclick="filterLive('EPL', this)">EPL</button>
+            <button class="tab-btn" onclick="filterLive('K리그', this)">K리그</button>
+            <button class="tab-btn" onclick="filterLive('KBO', this)">KBO</button>
+            <button class="tab-btn" onclick="filterLive('F1', this)">F1</button>
+        </div>
+        <div class="live-section-wrapper">
             <button class="slide-arrow left" onclick="scrollGrid(this, 'left')">❮</button>
-            <div class="carousel-track" id="carousel-track">
-                <div class="live-card-large"
-                    style="background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('../images/리버플\ vs\ 맨시티.png') no-repeat center/cover !important; border: 1px solid rgba(255,255,255,0.2) !important;">
-                    <div class="badge"><span class="dot-live"></span> <b>EPL LIVE</b></div>
-                    <div class="match-vs">
-                        <div class="team"><img src="../images/EPL/리버플.png" width="60">
-                            <p>리버플</p>
-                        </div>
-                        <div class="score">2 : 1</div>
-                        <div class="team"><img src="../images/EPL/맨체스터 시티.png" width="60">
-                            <p>맨시티</p>
-                        </div>
-                    </div>
-                    <h3>AI 전술 분석: 리버플의 하이프레싱 대응 중</h3>
-                </div>
-                <div class="live-card-large"
-                    style="background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('../images/울산 vs 서울.png') no-repeat center/100% 100% !important; border: 1px solid rgba(255,255,255,0.2) !important;">
-                    <div class="badge"><span class="dot-live"></span> <b>K리그 LIVE</b></div>
-                    <div class="match-vs">
-                        <div class="team"><img src="../images/kleague/울산 HD FC.png" width="80">
-                            <p>울산</p>
-                        </div>
-                        <div class="score">0 : 0</div>
-                        <div class="team"><img src="../images/kleague/FC 서울.png" width="80">
-                            <p>서울</p>
-                        </div>
-                    </div>
-                    <h3>현대가 더비: 빌드업 경로 집중 분석 중</h3>
-                </div>
-                <div class="live-card-large"
-                    style="background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('../images/SSG vs 롯데.png') no-repeat center/100% 100% !important; border: 1px solid rgba(255,255,255,0.2) !important;">
-                    <div class="badge"><span class="dot-live"></span> <b>KBO LIVE</b></div>
-                    <div class="match-vs">
-                        <div class="team"><img src="../images/KBO/SSG 랜더스.png" width="80">
-                            <p>SSG</p>
-                        </div>
-                        <div class="score">5 : 3</div>
-                        <div class="team"><img src="../images/KBO/롯데 자이언츠.png" width="80">
-                            <p>롯데</p>
-                        </div>
-                    </div>
-                    <h3>8회말 투구 분석: 직구 비중 70% 예상</h3>
-                </div>
-                <div class="live-card-large"
-                    style="background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('../images/벤츠 vs 레드불.png') no-repeat center/100% 100% !important; border: 1px solid rgba(255,255,255,0.2) !important;">
-                    <div class="badge"><span class="dot-live"></span> <b>F1 LIVE</b></div>
-                    <div class="match-vs">
-                        <div class="team"><img src="../images/f1/메르세데스.png" width="70">
-                            <p>메르세데스</p>
-                        </div>
-                        <div class="score">LAP 42</div>
-                        <div class="team"><img src="../images/f1/레드불.png" width="70">
-                            <p>레드불</p>
-                        </div>
-                    </div>
-                    <h3>타이어 마모도 데이터: 페라리 피트인 임박</h3>
-                </div>
-            </div>
+            <div id="live-list" class="live-grid no-scrollbar"></div>
             <button class="slide-arrow right" onclick="scrollGrid(this, 'right')">❯</button>
-        </section>
+        </div>
+    </section>
 
-        <section class="tab-section">
-            <div class="league-tabs">
-                <button class="tab-btn active" onclick="filterLive('ALL', this)">전체</button>
-                <button class="tab-btn" onclick="filterLive('EPL', this)">EPL</button>
-                <button class="tab-btn" onclick="filterLive('K리그', this)">K리그</button>
-                <button class="tab-btn" onclick="filterLive('KBO', this)">KBO</button>
-                <button class="tab-btn" onclick="filterLive('F1', this)">F1</button>
-            </div>
-            <div class="live-section-wrapper">
-                <button class="slide-arrow left" onclick="scrollGrid(this, 'left')">❮</button>
-                <div id="live-list" class="live-grid no-scrollbar"></div>
-                <button class="slide-arrow right" onclick="scrollGrid(this, 'right')">❯</button>
-            </div>
-        </section>
+    <section class="league-grid-section">
+        <div class="category-card" onclick="openLeague('EPL')">🏴󠁧󠁢󠁥󠁮󠁧󠁿 EPL</div>
+        <div class="category-card" onclick="openLeague('K리그')">🇰🇷 K리그</div>
+        <div class="category-card" onclick="openLeague('KBO')">⚾ KBO</div>
+        <div class="category-card" onclick="openLeague('F1')">🏎️ F1</div>
+    </section>
 
-        <section class="league-grid-section">
-            <div class="category-card" onclick="openLeague('EPL')">🏴󠁧󠁢󠁥󠁮󠁧󠁿 EPL</div>
-            <div class="category-card" onclick="openLeague('K리그')">🇰🇷 K리그</div>
-            <div class="category-card" onclick="openLeague('KBO')">⚾ KBO</div>
-            <div class="category-card" onclick="openLeague('F1')">🏎️ F1</div>
-        </section>
+    <section class="highlights-section" id="highlights-container"></section>
+</main>
 
-        <section class="highlights-section" id="highlights-container"></section>
-    </main>
+<main id="about-view" class="hidden">
+    <section class="about-hero">
+        <h1 class="shimmer">Analyzed Fighter</h1>
+        <p>스포츠를 더 똑똑하게, AI 기술로 찾는 당신의 소울메이트 팀</p>
+    </section>
 
-    <main id="about-view" class="hidden">
-        <section class="about-hero">
-            <h1 class="shimmer">Analyzed Fighter</h1>
-            <p>스포츠를 더 똑똑하게, AI 기술로 찾는 당신의 소울메이트 팀</p>
-        </section>
+    <section class="features-grid" id="about-features"></section>
 
-        <section class="features-grid" id="about-features"></section>
+    <section class="team-section">
+        <h2>Our Team</h2>
+        <div class="team-grid" id="about-team"></div>
+    </section>
+</main>
 
-        <section class="team-section">
-            <h2>Our Team</h2>
-            <div class="team-grid" id="about-team"></div>
-        </section>
-    </main>
+<main id="detail-view" class="detail-view hidden">
+    <section id="detail-hero" class="detail-hero">
+        <h1 id="detail-title"></h1>
+        <p id="detail-desc"></p>
+    </section>
+    <section class="standing-container">
+        <h3>시즌 순위표</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>순위</th>
+                    <th>팀명</th>
+                    <th>경기</th>
+                    <th>승점</th>
+                </tr>
+            </thead>
+            <tbody id="standing-body"></tbody>
+        </table>
+    </section>
+</main>
 
-    <main id="detail-view" class="detail-view hidden">
-        <section id="detail-hero" class="detail-hero">
-            <h1 id="detail-title"></h1>
-            <p id="detail-desc"></p>
-        </section>
-        <section class="standing-container">
-            <h3>시즌 순위표</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>순위</th>
-                        <th>팀명</th>
-                        <th>경기</th>
-                        <th>승점</th>
-                    </tr>
-                </thead>
-                <tbody id="standing-body"></tbody>
-            </table>
-        </section>
-    </main>
-
-    <div id="auth-modal" class="modal-overlay hidden">
-        <div class="modal-backdrop" onclick="closeModal()"></div>
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>환영합니다</h2>
-            </div>
-            <div class="modal-body">
-                <form onsubmit="event.preventDefault();" class="auth-form">
-                    <div id="name-field" class="hidden"><input type="text" placeholder="이름"></div>
-                    <input type="email" placeholder="이메일"><input type="password" placeholder="비밀번호">
-                    <button id="auth-submit" class="submit-btn">로그인</button>
-                </form>
-                <button class="link-btn" onclick="toggleAuthMode()" id="toggle-btn"
-                    style="width:100%; margin-top:10px;">회원가입</button>
-            </div>
+<div id="auth-modal" class="modal-overlay hidden">
+    <div class="modal-backdrop" onclick="closeModal()"></div>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>환영합니다</h2>
+        </div>
+        <div class="modal-body">
+            <form onsubmit="event.preventDefault();" class="auth-form">
+                <div id="name-field" class="hidden"><input type="text" placeholder="이름"></div>
+                <input type="email" placeholder="이메일"><input type="password" placeholder="비밀번호">
+                <button id="auth-submit" class="submit-btn">로그인</button>
+            </form>
+            <button class="link-btn" onclick="toggleAuthMode()" id="toggle-btn"
+                style="width:100%; margin-top:10px;">회원가입</button>
         </div>
     </div>
+</div>
 
-    <div id="chat-window" class="chat-window hidden">
-        <div class="chat-header"><span>🤖 AI 분석가 <b>스분파</b></span><button class="close-btn"
-                onclick="toggleChat()">✕</button></div>
-        <div id="chat-messages" class="chat-messages no-scrollbar"></div>
-        <div id="chat-options" class="chat-options"></div>
-    </div>
+<div id="chat-window" class="chat-window hidden">
+    <div class="chat-header"><span>🤖 AI 분석가 <b>스분파</b></span><button class="close-btn"
+            onclick="toggleChat()">✕</button></div>
+    <div id="chat-messages" class="chat-messages no-scrollbar"></div>
+    <div id="chat-options" class="chat-options"></div>
+</div>
 
-    <button id="float-btn" class="creepy-btn" onclick="toggleChat()">
-        <span class="creepy-btn__eyes">
-            <span class="creepy-btn__eye"><span class="creepy-btn__pupil" id="pupil-l"></span></span>
-            <span class="creepy-btn__eye"><span class="creepy-btn__pupil" id="pupil-r"></span></span>
-        </span>
-        <span class="creepy-btn__cover">AI 분석</span>
-    </button>
+<button id="float-btn" class="creepy-btn" onclick="toggleChat()">
+    <span class="creepy-btn__eyes">
+        <span class="creepy-btn__eye"><span class="creepy-btn__pupil" id="pupil-l"></span></span>
+        <span class="creepy-btn__eye"><span class="creepy-btn__pupil" id="pupil-r"></span></span>
+    </span>
+    <span class="creepy-btn__cover">AI 분석</span>
+</button>
 
-    <script src="../static/script.js"></script>
+<script src="../static/script.js"></script>
 </body>
 
 </html>

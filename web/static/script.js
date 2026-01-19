@@ -3,10 +3,65 @@ let currentStep = 0;
 
 const leagues = ["EPL", "K 리그", "KBO", "F1"];
 const teams = {
-    "EPL": ["맨시티", "리버풀", "아스널"],
-    "K리그": ["울산", "전북", "서울"],
-    "KBO": ["LG", "삼성", "기아"],
-    "F1": ["레드불", "페라리", "메르세데스"]
+    "EPL": ["맨체스터 시티", "리버풀", "아스날", "뉴캐슬 유나이티드", "첼시", "맨체스터 유나이티드", "토트넘 홋스퍼", "아스톤 빌라", "브라이튼", "웨스트햄 유나이티드", "울버햄튼 원더러스", "크리스탈 팰리스"],
+    "K리그": ["울산 HD FC", "전북 현대 모터스", "FC 서울", "포항 스틸러스", "광주FC", "인천 유나이티드", "수원 삼성 블루윙즈", "강원FC", "제주 유나이티드", "대전 하나 시티즌", "대구FC", "FC안양"],
+    "KBO": ["LG 트윈즈", "삼성 라이온즈", "기아 타이거즈", "SSG 랜더스", "롯데 자이언츠", "NC 다이노스", "두산 베어스", "키움 히어로즈", "한화 이글스", "KT 위즈"],
+    "F1": ["레드불", "페라리", "메르세데스", "맥라렌", "애스턴 마틴", "알파인", "윌리엄스", "레이싱 불스", "하스", "자우버"]
+};
+
+// ✅ 팀 로고 이미지 매핑 (데이터베이스 JSON의 team_name과 정확히 일치해야 합니다)
+const TEAM_LOGO_MAP = {
+    // EPL
+    "리버풀": "../images/EPL/리버풀.png",
+    "맨체스터 시티": "../images/EPL/맨체스터 시티.png",
+    "맨체스터 유나이티드": "../images/EPL/맨체스터 유나이티드.png",
+    "아스날": "../images/EPL/아스날.png",
+    "아스톤 빌라": "../images/EPL/아스톤 빌라.png",
+    "첼시": "../images/EPL/첼시.png",
+    "토트넘 홋스퍼": "../images/EPL/토트넘 홋스퍼.png",
+    "브라이튼": "../images/EPL/브라이튼.png",
+    "웨스트햄 유나이티드": "../images/EPL/웨스트햄 유나이티드.png",
+    "울버햄튼 원더러스": "../images/EPL/울버햄튼 원더러스.png",
+    "크리스탈 팰리스": "../images/EPL/크리스탈 팰리스.png",
+    "뉴캐슬 유나이티드": "../images/EPL/뉴캐슬 유나이티드.png",
+
+    // K리그
+    "울산 HD FC": "../images/kleague/울산 HD FC.png",
+    "전북 현대 모터스": "../images/kleague/전북 현대 모터스.png",
+    "FC 서울": "../images/kleague/FC 서울.png",
+    "포항 스틸러스": "../images/kleague/포항 스틸러스.png",
+    "광주FC": "../images/kleague/광주FC.png",
+    "인천 유나이티드 FC": "../images/kleague/인천 유나이티드.png",
+    "수원 삼성 블루윙즈": "../images/kleague/수원 삼성 블루윙즈.png",
+    "강원 FC": "../images/kleague/강원FC.png",
+    "제주 SK FC": "../images/kleague/제주 SK FC.png",
+    "대전 하나 시티즌": "../images/kleague/대전 하나 시티즌.png",
+    "대구FC": "../images/kleague/대구FC.png",
+    "FC안양": "../images/kleague/FC안양.png",
+
+    // KBO
+    "LG 트윈즈": "../images/kbo/LG 트윈즈.png",
+    "삼성 라이온즈": "../images/kbo/삼성 라이온즈.png",
+    "기아 타이거즈": "../images/kbo/기아 타이거즈.png",
+    "SSG 랜더스": "../images/kbo/SSG 랜더스.png",
+    "롯데 자이언츠": "../images/kbo/롯데 자이언츠.png",
+    "NC 다이노스": "../images/kbo/NC 다이노스.png",
+    "두산 베어스": "../images/kbo/두산 베어스.png",
+    "키움 히어로즈": "../images/kbo/키움 히어로즈.png",
+    "한화 이글스": "../images/kbo/한화 이글스.png",
+    "KT 위즈": "../images/kbo/KT 위즈.png",
+
+    // F1
+    "레드불": "../images/logos/f1/레드불.png",
+    "메르세데스": "../images/logos/f1/메르세데스.png",
+    "페라리": "../images/logos/f1/페라리.png",
+    "맥라렌": "../images/logos/f1/맥라렌.png",
+    "애스턴 마틴": "../images/logos/f1/애스턴 마틴.png",
+    "알핀": "../images/logos/f1/알핀.png",
+    "윌리엄스": "../images/logos/f1/윌리엄스.png",
+    "레이싱 불스": "../images/logos/f1/레이싱 불스.png",
+    "하스": "../images/logos/f1/하스.png",
+    "자우버": "../images/logos/f1/자우버.png",
 };
 
 const leagueDetailData = {
@@ -16,7 +71,7 @@ const leagueDetailData = {
     'EPL': {
         desc: '세계 최고의 축구 리그 프리미어리그',
         color: '#38003c',
-        bgImg: '../images/리버플 vs 맨시티.png',
+        bgImg: '../images/리버풀 vs 맨시티.png',
         stats: { teams: '20개 팀', progress: '20라운드 진행 중', avgFans: '38,124명' },
         rank: [
             ['1', '리버풀', '20', '14', '3', '3', '45'],
@@ -110,6 +165,7 @@ const leagueDetailData = {
         ]
     }
 };
+
 /* --------------------------------- */
 /* --------- 정보 수정 필요 --------- */
 /* --------------------------------- */
@@ -446,18 +502,10 @@ function showOpts(opts, callback) {
 const chatData = {
     leagues: [
         { id: 'epl', name: '⚽ EPL', emoji: '🏴' },
-        { id: 'kleague', name: '⚽ K 리그', emoji: '🇰🇷' },
-        { id: 'kbo', name: '⚾ KBO 리그', emoji: '⚾' },
+        { id: 'kleague', name: '⚽ K리그', emoji: '🇰🇷' },
+        { id: 'kbo', name: '⚾ KBO', emoji: '⚾' },
         { id: 'f1', name: '🏎️ 포뮬러 원', emoji: '🏁' }
     ],
-    recommendations: {
-        epl: {
-            aggressive: { name: '리버풀 FC', slogan: "You'll Never Walk Alone", tags: ['헤비메탈', '압박'], passion: 95, strategy: 85, history: 90, star: 80, money: 75, logo: '🔴', insight: '강한 압박과 빠른 전환을 좋아한다면 잘 맞아요.' },
-            traditional: { name: '맨체스터 유나이티드', slogan: "Glory Glory Man United", tags: ['전통', '명가'], passion: 80, strategy: 70, history: 100, star: 85, money: 90, logo: '😈', insight: '역사와 상징성이 큰 팀을 선호한다면 추천!' },
-            star: { name: '맨시티', slogan: "Blue Moon", tags: ['월드클래스', '전술'], passion: 75, strategy: 100, history: 60, star: 95, money: 100, logo: '🔵', insight: '전술/퀄리티/스타 라인업을 중요시한다면 잘 맞아요.' },
-            underdog: { name: '아스톤 빌라', slogan: "Prepared", tags: ['돌풍', '성장'], passion: 85, strategy: 80, history: 75, star: 65, money: 70, logo: '🦁', insight: '성장 스토리와 반란 서사를 좋아한다면 딱.' }
-        }
-    }
 };
 
 // ✅ 라벨(사용자 선택) → 토큰(최종 query용) 매핑
@@ -467,7 +515,7 @@ const intentMapKleague = {
         "높은 관중 동원력": ["전국구 팬덤"],
         "지역색 강함": ["축구 수도"],
         "팬 소통 강화": ["팬_소통_강화"],
-        "라이벌리·더비 문화": ["슈퍼매치"]
+        "라이벌·더비 문화": ["슈퍼매치"]
     },
     star: {
         "스타 플레이어가 있는": ["스타_군단"],
@@ -506,7 +554,7 @@ const intentMapEpl = {
         "높은 팬 충성도": ["높은 팬 충성도"],
         "글로벌 인기": ["한국_선수_인연"],
         "지역색 강함": ["홀트엔드"],
-        "라이벌리 문화": ["맨체스터 더비"]
+        "라이벌 문화": ["맨체스터 더비"]
     },
 
     star: {
@@ -645,15 +693,51 @@ let queryTokenSet = new Set();
 
 function addTokens(intentMap, categoryKey, selectedLabel) {
     const tokens = intentMap?.[categoryKey]?.[selectedLabel] || [];
+    // 🔍 선택 전 상태
+    console.log("➕ addTokens 호출", {
+        category: categoryKey,
+        selectedLabel,
+        tokens,
+        before: Array.from(queryTokenSet)
+    });
+
     tokens.forEach(t => queryTokenSet.add(t));
+
+    // 🔍 선택 후 상태
+    console.log("✅ queryTokenSet 누적 결과", Array.from(queryTokenSet));
 }
+
+/**
+ * 사용자의 모든 응답을 종합하여 학습 모델용 자연어 쿼리를 생성합니다.
+ * 좋아하는 팀 유무에 따라 서로 다른 문장 템플릿을 사용합니다.
+ * @returns {Object} - favorite_team 및 구조화된 full_query 문장
+ */
 
 function buildFinalQuery() {
-    return Array.from(queryTokenSet).join(" ");
+    // 1) Set에 모인 토큰을 배열로 변환
+    const tokens = Array.from(queryTokenSet);
+
+    // 2) 자연어 문장 만들기 (좋아하는 팀 유무에 따라 문장 다르게)
+    const hasFav = userSelections.favoriteTeamExists === "yes";
+    const favTeam = userSelections.favoriteTeam;
+
+    // 3) 토큰을 보기 좋게 연결
+    const tokenText = tokens.length > 0 ? tokens.join(", ") : "다양한 특징";
+
+    // 4) 최종 자연어 쿼리(모델 입력용)
+    // ⚠️ 기존에 선언되지 않은 starToken, capitalToken 등을 사용하던 버그를 수정했습니다.
+    const full_query = hasFav && favTeam && favTeam !== "none"
+        ? `저는 ${favTeam} 팬이고, ${tokenText} 같은 팀 컬러와 운영 스타일을 선호해요.`
+        : `저는 ${tokenText} 같은 팀 컬러와 운영 스타일을 선호해요.`;
+
+    // 5) 객체 형태로 반환
+    return {
+        tokens,        // ["토큰1", "토큰2", ...]
+        full_query     // "저는 ... 선호합니다."
+    };
 }
 
-
-/* --- [B-3] 답 저장 --- */
+// [B-3] 사용자의 모든 선택지와 분석 결과(최종 쿼리 포함)를 저장하는 전역 객체
 userSelections = {
     favoriteTeamExists: "",
     league: "",
@@ -663,7 +747,8 @@ userSelections = {
     story: "",
     visual: "",
     capital: "",
-    finalQuery: ""
+    // 최종 쿼리는 이제 객체(Dictionary) 형태로 초기화 및 저장됨
+    finalQuery: {}
 };
 
 
@@ -771,6 +856,7 @@ function startBotLogic() {
     currentStep = 1;
     followIndex = 0;
 
+    // 챗봇 재시작 또는 초기화 시 사용자 선택 데이터를 초기 상태로 리셋
     userSelections = {
         favoriteTeamExists: "",
         league: "",
@@ -780,7 +866,8 @@ function startBotLogic() {
         story: "",
         visual: "",
         capital: "",
-        finalQuery: ""
+        // 쿼리 데이터 구조를 객체형으로 유지
+        finalQuery: {}
     };
 
     queryTokenSet = new Set(); // ✅ 토큰 누적 초기화
@@ -807,17 +894,61 @@ function askHasFavoriteTeam() {
     showOpts(['✅ 있어요', '❌ 없어요'], (choice) => {
         addMsg('user', choice);
 
+        // 1) 좋아하는 팀 없음 → 관심 리그(4개)로 바로
         if (choice === '❌ 없어요') {
             userSelections.favoriteTeamExists = "no";
             userSelections.favoriteTeam = "none";
-            askLeagueInterestThenContinue(false);
+            userSelections.favoriteLeague = "";
+            console.log("📍 좋아하는 팀 없음: userSelections.favoriteTeam =", userSelections.favoriteTeam);
+            askLeagueInterestOnly();   // ✅ 이 함수가 반드시 있어야 함
             return;
         }
 
+        // 2) 좋아하는 팀 있음 → 그 팀의 리그 → 팀 선택 → (이후 3개 리그만 보여주기)
         userSelections.favoriteTeamExists = "yes";
-        askLeagueInterestThenContinue(true);
+        askFavoriteTeamLeague();
     });
 }
+
+function askFavoriteTeamLeague() {
+    addMsg('bot', '좋아하는 팀이 속한 리그는 어디인가요?');
+
+    const leagueOpts = chatData.leagues.map(l => l.name);
+    showOpts(leagueOpts, (choice) => {
+        const selected = chatData.leagues.find(l => l.name === choice);
+        const leagueId = selected?.id || 'epl';
+
+        userSelections.favoriteLeague = leagueId;
+        userSelections.league = leagueId;
+
+        addMsg('user', choice);
+        askTeamPickByLeague(leagueId); // 👉 바로 팀 선택
+    });
+}
+
+function askLeagueInterestOnly() {
+    addMsg('bot', '먼저, 어떤 리그에 관심이 있으신가요?');
+
+    const leagueOpts = chatData.leagues.map(l => l.name);
+
+    showOpts(leagueOpts, (choice) => {
+        const selected = chatData.leagues.find(l => l.name === choice);
+        const leagueId = selected?.id || 'epl';
+
+        userSelections.league = leagueId;
+        addMsg('user', `${choice} 선택!`);
+
+        // 관심 리그를 골랐으니 바로 성향 질문 시작
+        followIndex = 0;
+        queryTokenSet = new Set();
+        askNextFollowup();
+    });
+}
+
+// (환경에 따라) 전역 바인딩 안전장치
+window.askLeagueInterestOnly = askLeagueInterestOnly;
+
+
 
 /* --- 리그 선택 --- */
 function askLeagueInterestThenContinue(needTeamPick) {
@@ -854,14 +985,67 @@ function askTeamPickByLeague(leagueId) {
 
     showOpts(teamOpts, (teamName) => {
         userSelections.favoriteTeam = teamName;
+        console.log("📍 좋아하는 팀 선택 완료: userSelections.favoriteTeam =", userSelections.favoriteTeam);
         addMsg('user', `${teamName} 좋아해요!`);
-        askNextFollowup();
+
+        askOtherLeagueInterest(); // ⭐ 새 단계
     });
 }
+
+/**
+ * 좋아하는 팀 선택 후, 새롭게 분석을 진행할 관심 리그를 선택받습니다.
+ */
+function askOtherLeagueInterest() {
+    addMsg('bot', '새롭게 관심 있는 리그는 어디인가요?');
+
+    // 사용자가 방금 고른 좋아하는 팀의 리그 ID를 가져옵니다.
+    const exclude = userSelections.favoriteLeague;
+    console.log("🔍 [디버그] 제외할 좋아하는 팀의 리그:", exclude);
+
+    // 전체 리그 목록에서 좋아하는 팀의 리그를 제외한 나머지를 필터링합니다.
+    const filteredLeagues = chatData.leagues
+        .filter(l => l.id !== exclude)
+        .map(l => l.name);
+
+    console.log("🔍 [디버그] 화면에 표시할 관심 리그 옵션:", filteredLeagues);
+
+    showOpts(filteredLeagues, (choice) => {
+        // 사용자가 선택한 리그 이름에 해당하는 리그 객체를 찾습니다.
+        const selected = chatData.leagues.find(l => l.name === choice);
+        const newLeagueId = selected?.id || "epl";
+
+        // 📍 핵심 수정: 성향 테스트를 진행할 리그(userSelections.league)를 새 리그 ID로 업데이트합니다.
+        userSelections.league = newLeagueId;
+        console.log("✅ [디버그] 분석 대상 리그가 변경되었습니다:", userSelections.league);
+
+        addMsg('user', choice);
+
+        // 사용자가 혼란스럽지 않게 리그 전환 안내 메시지를 띄웁니다.
+        setTimeout(() => {
+            addMsg('bot', `좋습니다! 이제 ${choice}에 대한 성향 분석을 시작할게요. 🚀`);
+
+            // 질문 순서를 처음(0번)부터 시작하도록 초기화합니다.
+            followIndex = 0;
+
+            // 다음 성향 질문으로 이동합니다.
+            askNextFollowup();
+        }, 500);
+    });
+}
+
 
 /* --- 후속 4문항 --- */
 function askNextFollowup() {
     if (followIndex >= questions.length) {
+        // ✅ 모든 질문이 완료되면 최종 쿼리 객체를 생성하여 저장합니다.
+        userSelections.finalQuery = buildFinalQuery();
+
+        // 🔍 [디버그] 모델로 전송될 최종 데이터 구조 확인
+        console.log("-----------------------------------------");
+        console.log("🚀 [FINAL DATA]", userSelections);
+        console.log("📝 [MODEL QUERY]", userSelections.finalQuery.full_query);
+        console.log("-----------------------------------------");
+
         processAnalysis();
         return;
     }
@@ -886,7 +1070,11 @@ function askNextFollowup() {
 
         showOpts(opts, (choiceLabel) => {
             userSelections[q.key] = choiceLabel;
+
+            // ✅ 토큰 누적
             addTokens(intentMap, q.key, choiceLabel);
+
+            // ✅ 매 질문마다 query 갱신
             userSelections.finalQuery = buildFinalQuery();
 
             addMsg("user", choiceLabel);
@@ -895,6 +1083,7 @@ function askNextFollowup() {
         });
     }, 550);
 }
+
 
 
 /* --- 분석 로딩 + 서버호환 --- */
@@ -908,36 +1097,40 @@ function processAnalysis() {
     document.getElementById('chat-messages').appendChild(loadingDiv);
     scrollChatToBottom();
 
-    // ✅ 서버가 있으면 서버 결과 사용 / 없으면 fallback
+    // ✅ 서버 결과 사용 (JSON 데이터 전송)
     fetch('/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userSelections),
     })
-        .then(res => res.json())
+        .then(res => {
+            if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+            return res.json();
+        })
         .then(data => {
             const loader = document.getElementById('loading-bubble');
             if (loader) loader.remove();
 
             if (data && data.error) {
-                addMsg('bot', `서버 오류: ${data.error}\n로컬 추천으로 대체할게요!`);
-                showDashboard(null); // fallback
+                console.error("Server Logic Error:", data.error);
+                addMsg('bot', `분석 중 오류가 발생했습니다: ${data.error}`);
             } else {
-                showDashboard(data); // ✅ 서버 데이터 기반
+                showDashboard(data); // ✅ 서버 데이터 기반 대시보드 출력
             }
         })
-        .catch(() => {
+        .catch((err) => {
             const loader = document.getElementById('loading-bubble');
             if (loader) loader.remove();
 
-            addMsg('bot', '서버 통신이 안돼서 로컬 추천으로 대체할게요!');
-            showDashboard(null);
+            console.error("Fetch/Network Error:", err);
+            addMsg('bot', '죄송합니다. 서버와 통신 중 문제가 발생했습니다. 네트워크 상태를 확인하시거나 잠시 후 다시 시도해 주세요. 😢');
         });
 }
 
 /* --- [결과] 대시보드 표시 (서버 있으면 서버 기반, 없으면 로컬 기반) --- */
 function showDashboard(resultData) {
-    // 1) 서버 응답이 정상이라면: 기존 서버 대시보드 방식 유지
+    // ✅ 서버 응답이 정상인 경우에만 대시보드를 렌더링합니다.
+    // 기존에 리버풀로 강제 설정하던 로컬 fallback 로직을 삭제했습니다.
     if (resultData && resultData.team_name && resultData.team_data && resultData.scores) {
         const team = {
             name: resultData.team_name,
@@ -952,145 +1145,177 @@ function showDashboard(resultData) {
             strategy: resultData.scores.strategy,
             history: resultData.scores.history,
             star: resultData.scores.star,
+            vibe: resultData.scores.vibe,
             insight: resultData.insight || "당신의 답변을 바탕으로 추천했어요!"
         };
 
         renderDashboardUI(team, userSelections.league);
-        return;
+    } else {
+        // 데이터가 비정상적인 경우 사용자에게 알림
+        addMsg('bot', '성향 분석 결과를 불러오는 데 실패했습니다. 다시 시도해 주세요.');
     }
-
-    // 2) 서버가 없거나 실패하면: 로컬 recommendations 기반 fallback
-    const leagueId = userSelections.league || 'epl';
-    const leagueData = chatData.recommendations[leagueId] || chatData.recommendations['epl'];
-    const vibeKey = userSelections.vibe || 'aggressive';
-    const team = leagueData[vibeKey] || leagueData['aggressive'];
-
-    const fallbackTeam = {
-        name: team.name,
-        slogan: team.slogan || "최고의 파트너",
-        tags: (team.tags || []).slice(0, 2),
-        logo: team.logo || '🏆',
-        match: team.match || 95,
-        passion: team.passion || 80,
-        money: team.money || 80,
-        strategy: team.strategy || 80,
-        history: team.history || 80,
-        star: team.star || 80,
-        insight: team.insight || "당신의 답변을 바탕으로 추천했어요!"
-    };
-
-    renderDashboardUI(fallbackTeam, leagueId);
 }
 
-/* --- 대시보드 UI 렌더 공통 함수 --- */
+/**
+ * 프리미엄 스타일로 디자인된 결과 대시보드를 렌더링합니다.
+ * @param {Object} team - 추천된 팀 데이터
+ * @param {string} leagueId - 선택된 리그 ID
+ */
 function renderDashboardUI(team, leagueId) {
     const chatWin = document.getElementById('chat-window');
-    chatWin.style.width = '845px';
-    chatWin.style.height = '700px';
+    // 결과창 크기를 더 콤팩트하게 줄여서 상단 헤더(닫기 버튼)가 잘 보이도록 합니다.
+    chatWin.style.width = '720px';
+    chatWin.style.height = '580px';
 
     const container = document.getElementById('chat-messages');
+
+    // 로고 이미지 경로 재확인
+    const logoSrc = TEAM_LOGO_MAP[team.name];
+
+    container.style.padding = '0'; // 대시보드가 꽉 차도록 패딩 제거
+
     container.innerHTML = `
     <div class="dashboard-container animate-slide-up">
-      <div class="dash-header">
-        <h2>당신을 위한 추천 팀</h2>
-        <div class="team-hero">
-          <div class="hero-row-top">
-            <div class="team-logo-circle">${team.logo || '⚽'}</div>
-            <h1 class="team-name">${team.name}</h1>
-          </div>
-          <div class="hero-row-bottom">
-            <p class="team-slogan">"${team.slogan}"</p>
-            <div class="tag-row">
-              ${(team.tags || []).map(tag => `<span class="tag">#${tag}</span>`).join('')}
-            </div>
+      <!-- 헤더: 타이틀과 매칭 배지 -->
+      <header class="dash-header">
+        <h2>Optimal Match Found</h2>
+        <div class="match-badge">
+          <span>${team.match || 95}</span>% 일치하는 클럽을 찾았어요
+        </div>
+      </header>
+
+      <!-- 히어로: 로고와 팀명 -->
+      <section class="team-hero">
+        <div class="team-logo-circle">
+          ${logoSrc
+            ? `<img src="${logoSrc}" alt="${team.name} 로고" class="team-logo-img">`
+            : `<span style="font-size: 40px;">⚽</span>`
+        }
+        </div>
+        <div class="team-info-box">
+          <h1 class="team-name">${team.name}</h1>
+          <p class="team-slogan">"${team.slogan}"</p>
+          <div class="tag-row">
+            ${(team.tags || []).map(tag => `<span class="tag">#${tag}</span>`).join('')}
           </div>
         </div>
-        <div class="match-badge"><span>${team.match || 95}</span>% 일치</div>
-      </div>
+      </section>
 
+      <!-- 바디: 차트와 인사이트 -->
       <div class="dash-body">
-        <div class="dash-left">
+        <!-- 좌측 컬럼 -->
+        <article class="chart-card">
           <div class="chart-wrapper">
             <canvas id="radarChart"></canvas>
           </div>
-          <div class="special-points">
-            <h3>⭐ 핵심 포인트</h3>
-            <ul>
-              <li>• 선택 리그: <b>${leagueId}</b></li>
-              <li>• 좋아하는 팀: <b>${userSelections.favoriteTeam || 'none'}</b></li>
-              <li>• 전통/역사: <b>${userSelections.history || '-'}</b></li>
-              <li>• 스타 선호: <b>${userSelections.star || '-'}</b></li>
-              <li>• 투자 성향: <b>${userSelections.money || '-'}</b></li>
-            </ul>
+          <div class="points-list">
+            <div class="point-item">
+              <span class="point-label">추천 클럽</span>
+              <span class="point-value">${team.name}</span>
+            </div>
+            <div class="point-item">
+              <span class="point-label">분석 대상 리그</span>
+              <span class="point-value">${leagueId.toUpperCase()}</span>
+            </div>
+            <div class="point-item">
+              <span class="point-label">기존 선호 팀</span>
+              <span class="point-value">${userSelections.favoriteTeam || '없음'}</span>
+            </div>
           </div>
-        </div>
+        </article>
 
-        <div class="dash-right">
-          <div class="reason-section">
-            <h3>추천 이유</h3>
-            <div class="reason-cards">
-              <div class="r-card"><span>1</span> 선택 성향과 팀 특성 매칭</div>
-              <div class="r-card"><span>2</span> 리그/전통/스타/투자 성향 반영</div>
-              <div class="r-card"><span>3</span> 팬덤 경험 만족도 기대</div>
+        <!-- 우측 컬럼 -->
+        <article class="insight-card">
+          <div class="recommend-reason">
+            <h3 class="section-title">왜 이 팀을 추천할까요?</h3>
+            <div class="reason-list">
+              <div class="reason-item" style="animation-delay: 0.1s;">✨ 사용자의 성향과 팀의 핵심 철학이 일치합니다.</div>
+              <div class="reason-item" style="animation-delay: 0.2s;">🏆 선호하시는 전력 및 서사 구조를 가지고 있습니다.</div>
+              <div class="reason-item" style="animation-delay: 0.3s;">📈 데이터 기반 분석 결과 가장 높은 만족도가 기대됩니다.</div>
             </div>
           </div>
 
-          <div class="insight-box" style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px; text-align: left; margin-bottom: 20px;">
-            <h4 style="color: var(--primary); margin-bottom: 10px;">💡 추천 인사이트</h4>
-            <p style="font-size: 14px; line-height: 1.6; color: #ccc;">${team.insight}</p>
+          <div class="insight-box">
+            <h3 class="section-title">전문가 인사이트</h3>
+            <div class="insight-bubble">
+              ${team.insight}
+            </div>
           </div>
-        </div>
+        </article>
       </div>
 
-      <div class="dash-footer">
-        <button class="action-btn" onclick="resetChat()">다시 분석하기</button>
-        <button class="action-btn primary" onclick="window.open('https://www.liverpoolfc.com')">
-          <img src="https://img.icons8.com/?size=100&id=742&format=png&color=ffffff" width="16"> 팀 홈페이지
+      <!-- 푸터: 액션 버튼 -->
+      <footer class="dash-footer">
+        <button class="btn-premium" onclick="resetChat()">다시 분석하기</button>
+        <button class="btn-premium primary" onclick="handleTeamAction('${team.name}')">
+          <img src="https://img.icons8.com/?size=100&id=742&format=png&color=ffffff" width="16">
+          클럽 상세 정보 확인
         </button>
-        <button class="action-btn">다가오는 경기 확인</button>
-      </div>
+      </footer>
     </div>
-  `;
+    `;
 
+    // 채팅창 하단으로 스크롤
     scrollChatToBottom();
 
+    // 레이더 차트 생성 (데이터가 준비된 후 실행)
+    setTimeout(() => {
+        initRadarChart(team);
+    }, 100);
+}
+
+function initRadarChart(team) {
     const ctx = document.getElementById('radarChart').getContext('2d');
-    const userVibeData = [85, 65, 75, 90, 80];
+
+    // ✅ 기존 방식: userSelections(사용자의 답변)를 기반으로 차트를 그렸습니다.
+    // ✅ 변경 방식: team(모델이 추천해준 팀)의 실제 스태츠 데이터를 기반으로 차트를 그립니다.
+    // 이를 통해 추천된 팀의 비전과 실제 특징을 더 정확하게 확인할 수 있습니다.
+    const teamStats = [
+        team.passion || 70,  // 열정 (fan_passion)
+        team.money || 70,    // 투자 (money)
+        team.strategy || 70, // 전략 (attack_style)
+        team.history || 70,  // 역사 (tradition)
+        team.star || 70,     // 스타 (star_power)
+        team.vibe || 70      // 감성 (underdog_feel)
+    ];
 
     new Chart(ctx, {
         type: 'radar',
         data: {
-            labels: ['열정', '자본', '전략', '역사', '스타성'],
-            datasets: [
-                {
-                    label: '팀 능력치',
-                    data: [team.passion, team.money, team.strategy, team.history, team.star],
-                    borderColor: '#FFD700',
-                    backgroundColor: 'rgba(255, 215, 0, 0.2)',
-                    borderWidth: 2
-                },
-                {
-                    label: '내 성향',
-                    data: userVibeData,
-                    borderColor: '#3B82F6',
-                    backgroundColor: 'rgba(59, 130, 246, 0.2)',
-                    borderWidth: 2
-                }
-            ]
+            labels: ['열정', '투자', '전략', '역사', '스타', '감성'],
+            datasets: [{
+                label: '추천 팀 특징',
+                data: teamStats,
+                backgroundColor: 'rgba(59, 130, 246, 0.3)',
+                borderColor: '#3B82F6',
+                borderWidth: 2,
+                pointBackgroundColor: '#3B82F6',
+                pointBorderColor: '#fff',
+                pointHoverBackgroundColor: '#fff',
+                pointHoverBorderColor: '#3B82F6'
+            }]
         },
         options: {
+            responsive: true,
+            maintainAspectRatio: true,
             scales: {
                 r: {
-                    angleLines: { color: 'rgba(255,255,255,0.1)' },
-                    grid: { color: 'rgba(255,255,255,0.1)' },
-                    pointLabels: { color: '#fff', font: { size: 12 } },
-                    ticks: { display: false, max: 100, min: 0, stepSize: 20 }
+                    min: 0,
+                    max: 100,
+                    ticks: { display: false, stepSize: 20 },
+                    grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                    angleLines: { color: 'rgba(255, 255, 255, 0.1)' },
+                    pointLabels: {
+                        color: 'rgba(255, 255, 255, 0.7)',
+                        font: { size: 10, weight: '600' }
+                    }
                 }
             },
-            plugins: { legend: { labels: { color: '#fff' } } }
+            plugins: {
+                legend: { display: false }
+            }
         }
     });
-
     document.getElementById('chat-options').innerHTML = '';
 }
 
@@ -1112,7 +1337,8 @@ function resetChat() {
         story: "",
         visual: "",
         capital: "",
-        finalQuery: ""
+        // ✅ 쿼리 데이터 구조를 객체형으로 유지 (서버 전송용)
+        finalQuery: {}
     };
 
     queryTokenSet = new Set(); // ✅ 토큰 누적 초기화
