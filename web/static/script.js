@@ -1237,7 +1237,8 @@ function showDashboard(resultData) {
             star: resultData.scores.star,
             vibe: resultData.scores.vibe,
             "insight": resultData.insight || "당신의 답변을 바탕으로 추천했어요!",
-            "others": resultData.others || [] // ✅ 2,3등 데이터 전달
+            "others": resultData.others || [], // ✅ 2,3등 데이터 전달
+            "logId": resultData.log_id // ✅ 로그 ID 추가
         };
 
         renderDashboardUI(team, userSelections.league);
@@ -1341,6 +1342,9 @@ function renderDashboardUI(team, leagueId) {
           </div>
         </article>
 
+
+        </article>
+
         <!-- 우측 컬럼 -->
         <article class="insight-card">
           <div class="recommend-reason">
@@ -1364,12 +1368,28 @@ function renderDashboardUI(team, leagueId) {
       </div>
 
       <!-- 푸터: 액션 버튼 -->
-      <footer class="dash-footer">
-        <button class="btn-premium" onclick="resetChat()">다시 분석하기</button>
-        <button class="btn-premium primary" onclick="handleTeamAction('${team.name}')">
-          <img src="https://img.icons8.com/?size=100&id=742&format=png&color=ffffff" width="16">
-          클럽 상세 정보 확인
-        </button>
+      <!-- 푸터: 액션 버튼 -->
+      <footer class="dash-footer" style="flex-direction: column; gap: 15px;">
+          <!-- Feedback Section (Moved Here) -->
+          <div class="feedback-section" style="text-align: center; width: 100%;">
+             <p style="font-size: 13px; color: #ddd; margin-bottom: 8px;">추천 결과가 마음에 드시나요?</p>
+             <div class="feedback-buttons" style="display: flex; gap: 10px; justify-content: center;">
+                <button class="feedback-btn" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color:#fff; padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 13px; transition: all 0.2s;" onclick="sendFeedback(${team.logId}, true)" onmouseover="this.style.background='rgba(59, 130, 246, 0.5)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'">
+                    👍 좋아요
+                </button>
+                <button class="feedback-btn" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color:#fff; padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 13px; transition: all 0.2s;" onclick="sendFeedback(${team.logId}, false)" onmouseover="this.style.background='rgba(239, 68, 68, 0.5)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'">
+                    👎 별로예요
+                </button>
+             </div>
+          </div>
+          
+        <div class="footer-buttons" style="display: flex; gap: 10px; justify-content: center; width: 100%;">
+            <button class="btn-premium" onclick="resetChat()">다시 분석하기</button>
+            <button class="btn-premium primary" onclick="handleTeamAction('${team.name}')">
+            <img src="https://img.icons8.com/?size=100&id=742&format=png&color=ffffff" width="16">
+            클럽 상세 정보 확인
+            </button>
+        </div>
       </footer>
     </div>
     `;
@@ -1441,6 +1461,47 @@ function initRadarChart(team) {
 /* --- 다시 시작 --- */
 function resetChat() {
     startBotLogic();
+}
+
+/* --- [피드백] 좋아요/별로예요 전송 --- */
+function sendFeedback(logId, isLiked) {
+    if (!logId) {
+        // 비로그인 상태이거나 log_id가 없는 경우
+        alert("로그인 후 이용 가능한 기능이거나, 로그 정보가 없습니다.");
+        return;
+    }
+
+    // 버튼 비활성화 UI 처리
+    const btns = document.querySelectorAll('.feedback-btn');
+    btns.forEach(b => {
+        b.disabled = true;
+        b.style.opacity = '0.5';
+        b.style.cursor = 'not-allowed';
+    });
+
+    fetch('/api/feedback', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ log_id: logId, is_liked: isLiked })
+    })
+        .then(res => res.json())
+        .then(data => {
+            if (data.message) {
+                alert(isLiked ? "좋아요를 반영했습니다! ❤️" : "의견 감사합니다. 더 노력할게요! 💪");
+            } else {
+                alert("오류: " + (data.error || "알 수 없는 오류"));
+                // 실패 시 다시 활성화
+                btns.forEach(b => {
+                    b.disabled = false;
+                    b.style.opacity = '1';
+                    b.style.cursor = 'pointer';
+                });
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            alert("서버 통신 오류가 발생했습니다.");
+        });
 }
 
 /* html 로드 후 init 실행 */
