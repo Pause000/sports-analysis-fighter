@@ -1,4 +1,12 @@
 # =========================================================
+# 0. Environment Setup & Dependency Check
+# =========================================================
+from scripts.setup_env import install_requirements
+
+# Run installation check before importing anything else
+install_requirements()
+
+# =========================================================
 # 1. Imports & Configuration
 # =========================================================
 from flask import Flask, render_template, request, jsonify, send_from_directory
