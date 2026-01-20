@@ -17,11 +17,10 @@ class RecommendationEngine:
     Core engine for Sports Team Recommendation Chatbot.
     Combines NLP (SBERT), Graph (Node2Vec), and Traditional ML (XGBoost/LGBM) scores.
     """
-    def __init__(self, data_dir='./JSON', model_path='./sports_chatbot_model50.joblib'):
+    def __init__(self, model_path='./sports_chatbot_model50.joblib'):
         """
         Initialize the engine with paths to data and model artifacts.
         """
-        self.DATA_DIR = data_dir
         self.MODEL_PATH = model_path
         
         # Hyperparameters
@@ -75,8 +74,40 @@ class RecommendationEngine:
         else:
             print(f"❌ 모델 파일 없음: {self.MODEL_PATH}")
 
-        # 2. 데이터 로딩
-        self.teams_master = self._load_teams(self.DATA_DIR)
+        # 2. 데이터 로딩 (Database)
+        from database.models import Team # Import inside logic to avoid circular import issues
+        print("🔍 데이터베이스에서 팀 정보 로딩 중...")
+        try:
+            teams_db = Team.query.all()
+            self.teams_master = []
+            for t in teams_db:
+                # Convert SQLAlchemy object to dictionary
+                t_dict = {
+                    'team_id': t.team_id,
+                    'team_name': t.team_name,
+                    'team_name_unique': t.team_name, # Compatibility
+                    'league': t.league.upper() if t.league else '',
+                    'sport': t.sport,
+                    'home_city': t.home_city,
+                    'home_stadium': t.home_stadium,
+                    'logo_url': t.logo_url,
+                    'style_tags': t.style_tags if t.style_tags else [],
+                    'scores': t.scores if t.scores else {},
+                    'meta_description': t.meta_description,
+                    'introduction': t.meta_description # Compatibility
+                }
+                
+                # Normalize scores keys (remove possible colons)
+                if t_dict['scores']:
+                     t_dict['scores'] = {k.strip().replace(':', ''): v for k, v in t_dict['scores'].items()}
+
+                self.teams_master.append(t_dict)
+                
+            print(f"✅ 데이터베이스에서 {len(self.teams_master)}개 팀 로드 완료")
+            
+        except Exception as e:
+            print(f"❌ 데이터베이스 로드 실패: {e}")
+            self.teams_master = []
         
         # 3. N2V 모델 구축
         if self.teams_master:
@@ -84,34 +115,7 @@ class RecommendationEngine:
         else:
             print("❌ 팀 데이터를 찾을 수 없습니다.")
 
-    def _load_teams(self, path):
-        teams = []
-        if not os.path.exists(path):
-            print(f"❌ 경로 오류: '{path}'")
-            return teams
-        for root, dirs, files in os.walk(path):
-            for filename in files:
-                if filename.endswith('.json'):
-                    try:
-                        with open(os.path.join(root, filename), 'r', encoding='utf-8') as f:
-                            data = json.load(f)
-                            # Handle list wrapper if present
-                            if isinstance(data, list): data = data[0]
-                            
-                            # Normalize data keys
-                            data['team_name'] = data.get('team_name', data.get('team_name_unique', filename.replace('.json', '')))
-                            data['team_name_unique'] = data['team_name'] # Keep for compatibility
-                            data['league'] = data.get('league', '').upper()
-                            data['sport'] = data.get('sport', '')
-                            
-                            if 'scores' in data:
-                                # Remove colons if present
-                                data['scores'] = {k.strip().replace(':', ''): v for k, v in data['scores'].items()}
-                            
-                            teams.append(data)
-                    except Exception as e:
-                        print(f"Error reading {filename}: {e}")
-        return teams
+    # _load_teams legacy method removed as we now use DB
 
     def _build_n2v_model(self, teams_data):
         print("🚀 N2V 모델 구축 중...")

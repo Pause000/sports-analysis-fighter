@@ -76,7 +76,7 @@ import uuid
 
 # Initialize Recommendation Engine
 # (Manages NLP models, Node2Vec, and Artifacts internally)
-rec_engine = RecommendationEngine(data_dir='./database/JSON', model_path='./fit_model.joblib')
+rec_engine = RecommendationEngine(model_path='./fit_model.joblib')
 
 # =========================================================
 # 4. Flask Routes
@@ -349,8 +349,8 @@ if __name__ == '__main__':
     with app.app_context():
         db.create_all()
         print("✅ 데이터베이스 초기화 및 연결 확인 완료 (MySQL user_info 테이블)")
+        rec_engine.load_resources() # Run immediately for dev inside context
     
-    rec_engine.load_resources() # Run immediately for dev
     app.run(host='0.0.0.0', port=5000, debug=True)
 
 
