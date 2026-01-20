@@ -1,9 +1,23 @@
-# 🏟️ Sports Team Matchmaker (내 취향저격 스포츠 팀 찾기)
+# 🏟️ Sports Team Matchmaker
+</br>## 내 취향저격 스포츠 팀 찾기
 
-![Python](https://img.shields.io/badge/Python-3.8%2B-blue?logo=python&logoColor=white) 
-![Flask](https://img.shields.io/badge/Flask-2.0%2B-green?logo=flask&logoColor=white) 
-![MySQL](https://img.shields.io/badge/MySQL-8.0-orange?logo=mysql&logoColor=white)
-![AI](https://img.shields.io/badge/AI-SBERT%20%2B%20Node2Vec-purple)
+![Python](https://img.shields.io/badge/Python-3.8%2B-3776AB?style=flat&logo=python&logoColor=white)
+![Flask](https://img.shields.io/badge/Flask-2.0%2B-000000?style=flat&logo=flask&logoColor=white)
+![Flask-Login](https://img.shields.io/badge/Flask--Login-Authentication-CC0000?style=flat&logo=flask&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1?style=flat&logo=mysql&logoColor=white)
+  <br>
+![LightGBM](https://img.shields.io/badge/LightGBM-Ranking-FF6F00?style=flat&logo=lightgbm&logoColor=white)
+![Sentence-BERT](https://img.shields.io/badge/Sentence--BERT-Embedding-76E1FE?style=flat)
+![Scikit-learn](https://img.shields.io/badge/Scikit--learn-Preprocessing-F7931E?style=flat&logo=scikit-learn&logoColor=white)
+![Pandas](https://img.shields.io/badge/Pandas-Analysis-150458?style=flat&logo=pandas&logoColor=white)
+  <br>
+![Vanilla JS](https://img.shields.io/badge/Vanilla%20JS-ES6+-F7DF1E?style=flat&logo=javascript&logoColor=black)
+![HTML5](https://img.shields.io/badge/HTML5-Layout-E34F26?style=flat&logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-Design-1572B6?style=flat&logo=css3&logoColor=white)
+  <br>
+![GitHub](https://img.shields.io/badge/GitHub-Collaboration-181717?style=flat&logo=github&logoColor=white)
+![Notion](https://img.shields.io/badge/Notion-Management-000000?style=flat&logo=notion&logoColor=white)
+</div>
 
 > **"축구, 야구, F1... 남들은 재밌다는데 나는 어디를 응원해야 할까?"**  
 > 이제 고민하지 마세요. 당신의 성향과 딱 맞는 '인생 팀'을 AI가 찾아드립니다!
@@ -18,15 +32,14 @@
 5.  [🛠 사용된 기술 (Tech Stack)](#-사용된-기술-tech-stack)
 6.  [💻 설치 및 실행 가이드](#-설치-및-실행-가이드)
 7.  [📂 프로젝트 구조](#-프로젝트-구조-directory)
-8.  [🧱 핵심 코드 분석](#-핵심-코드-분석-code-deep-dive)
-9.  [👨‍💻 팀원 소개](#-팀원-소개)
+8.  [👨‍💻 팀원 소개](#-팀원-소개)
 
 ---
 
 ## 🔍 프로젝트 소개
-**Sports Team Matchmaker**는 스포츠에 입문하고 싶지만 어떤 팀을 응원해야 할지 몰라 망설였던 분들을 위한 **지능형 AI 챗봇 서비스**입니다.
+스포츠에 입문하고 싶지만 어떤 팀을 응원해야 할지 몰라 망설였던 분들을 위한 **지능형 AI 챗봇 서비스**
 
-복잡한 규칙이나 선수 이름을 몰라도 괜찮습니다. 평소 당신의 취향(예: "화끈한 공격이 좋아", "팬들의 열정이 중요해", "언더독의 기적을 믿어")만 이야기하면, **EPL(영국 축구), K리그(한국 축구), KBO(한국 야구), F1(포뮬러 1)** 리그 중에서 당신과 찰떡궁합인 팀을 추천해줍니다.
+복잡한 규칙이나 선수 이름을 몰라도 괜찮습니다. 평소 당신의 취향<I><span style="color:#808080">(예: "화끈한 공격이 좋아", "팬들의 열정이 중요해", "언더독의 기적을 믿어")</span></I>만 이야기하면, **EPL(영국 축구), K리그(한국 축구), KBO(한국 야구), F1(포뮬러 1)** 리그 중에서 당신과 찰떡궁합인 팀을 추천해줍니다.
 
 ---
 
@@ -74,7 +87,7 @@
 
 ---
 
-## 🛠 사용된 기술 스택 (Tech Stack)
+## 🛠 사용된 기술 (Tech Stack)
 
 ### 🧱 Backend (Server & Database)
 *   **Python 3.8+**: AI 라이브러리와의 호환성이 가장 뛰어난 언어로 선정했습니다.
@@ -123,10 +136,10 @@ python app.py
 
 ---
 
-## 📂 프로젝트 구조 (Directory)
+## 📁 프로젝트 구조 (Directory)
 ```
 sports-analysis-fighter/
-├── app.py                     # 🚀 메인 실행 파일 (서버 시작점)
+├── app.py                     # 메인 실행 파일 (서버 시작점)
 ├── database/                  # 💾 데이터베이스 관리
 │   ├── models.py              # DB 테이블 구조 정의 (User, Team, Log)
 │   └── extensions.py          # DB 연결 도구
@@ -139,91 +152,16 @@ sports-analysis-fighter/
 └── requirements.txt           # 📦 필요한 라이브러리 목록
 ```
 
----
-
-## 🧱 Code Deep Dive (핵심 코드 분석)
-
-프로젝트의 핵심이 되는 모델 서빙과 추천 로직의 실제 코드를 소개합니다.
-
-### 1. 🚀 `app.py`: 하이브리드 추천 엔진 초기화
-Flask 앱이 시작될 때, 무거운 NLP 모델(SBERT)과 그래프 모델(Node2Vec)을 메모리에 로드하여 실시간 추천을 준비합니다.
-
-```python
-# app.py (Line 72-79)
-
-# 3. Recommendation Engine Initialization
-# =========================================================
-from scripts.recommendation_engine import RecommendationEngine
-
-# 인스턴스 생성 시 데이터와 모델 경로를 지정합니다.
-# 내부적으로 SBERT, Node2Vec, XGBoost/LGBM 모델을 관리합니다.
-rec_engine = RecommendationEngine(
-    data_dir='./database/JSON', 
-    model_path='./fit_model.joblib'
-)
-```
-
-### 2. 🧠 `recommendation_engine.py`: 3단계 점수 산출 로직
-사용자의 입력(`query`)과 각 팀(`candidate`) 사이의 유사도를 세 가지 측면에서 분석하여 합산합니다.
-
-```python
-# scripts/recommendation_engine.py (Line 138)
-
-def calculate_integrated_score(self, query, anchor_name, candidate):
-    """
-    1. Semantic Score: 사용자의 말과 팀 스타일 태그의 의미적 유사도 (SBERT)
-    2. Relational Score: 좋아하는 팀(anchor)과 후보 팀 간의 그래프상 거리 (Node2Vec)
-    3. Vector Score: 자본력, 공격성 등 7대 지표의 수치적 매칭 (Rule-based)
-    """
-
-    # 1. Semantic Score (NLP)
-    # 사용자의 문장과 팀의 스타일 태그("닥공", "명문" 등)를 벡터로 변환해 비교
-    if self.model_nlp:
-        embs = self.model_nlp.encode([query, cand_tags])
-        s_sem = cosine_similarity([embs[0]], [embs[1]])[0][0]
-
-    # 2. Relational Score (Graph)
-    # 기존에 좋아하는 팀이 있다면, 그 팀과 '유사한' 위치에 있는 팀을 찾음
-    if self.n2v_model and anchor_name:
-         s_rel = self.n2v_model.wv.similarity(anchor_name, candidate['team_name'])
-
-    # 3. Vector Score (Weighted Logic)
-    # "돈", "부자" 등의 키워드가 있으면 자본력(money) 지표에 가중치 부여
-    if any(k in query for k in ["강한", "압도적", "최강", "우승", "부자"]):
-        target_vec[0], target_vec[1] = 40, 40  # strength, money 점수 상향 기대
-
-    return weighted_total_score, s_sem, s_rel, s_vec
-```
-
-### 3. 📡 `app.py`: `/chat` 라우트 (AI와 사용자 연결)
-프론트엔드에서 받은 사용자 정보(선호 팀, 리그, 쿼리)를 엔진에 전달하고 결과를 반환합니다.
-
-```python
-# app.py (Line 240)
-
-# 사용자의 자연어 입력(query)과 선호 정보(support_team)를 엔진에 전달
-result = rec_engine.recommend(
-    query=query,                # "공격적이고 화끈한 팀 추천해줘"
-    user_type=user_type,        # 기존 팬 여부 (0 or 1)
-    support_team=support_team,  # 기존 응원 팀 (Node2Vec의 시작점)
-    target_league=league        # 추천받고 싶은 리그 (EPL, KBO 등)
-)
-
-if "error" in result:
-    return jsonify(result), 404
-
-return jsonify(result) # { "team_name": "리버풀", "reason": ..., "score": 98.5 }
-```
 
 ---
 
 ## 👨‍💻 팀원 소개
-**Sports Analysis Fighter Team**은 스포츠 데이터의 가치를 믿는 개발자들로 구성되어 있습니다.
+**스분파**의 팀원을 소개합니다!
 
-*   👑 **강연우 (Leader / AI):** 추천 모델 아키텍처 설계, 핵심 알고리즘 구현
-*   🛠 **신종환 (Backend):** 안정적인 서버 구축, 데이터베이스 스키마 설계
-*   🎨 **조중현 (Frontend):** 사용자 경험(UX) 설계, 직관적인 인터페이스 개발
-*   📊 **한정현 (Data Analyst):** 다종목 스포츠 데이터 수집, 전처리 파이프라인 구축
+*   👑 **강연우 (Leader / AI):** LightGBM Ranker 학습 및 하이퍼파라미터 튜닝, DB 서버 관리, 데이터 수집 파이프라인 자동화
+*   🛠 **신종환 (Backend Engineer):** Feature Engineering, 데이터베이스 스키마(ERD) 설계
+*   📊 **조중현 (Project Manager):** 프로젝트 총괄 및 기획, 요구사항 정의 및 일정 관리
+*   🎨 **한정현 (Data Analyst & Frontend):** 데이터 전처리 파이프라인 구축, UI/UX 설계
 
 ---
 
