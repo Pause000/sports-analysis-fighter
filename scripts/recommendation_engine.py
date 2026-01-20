@@ -13,7 +13,14 @@ import warnings
 warnings.filterwarnings("ignore")
 
 class RecommendationEngine:
+    """
+    Core engine for Sports Team Recommendation Chatbot.
+    Combines NLP (SBERT), Graph (Node2Vec), and Traditional ML (XGBoost/LGBM) scores.
+    """
     def __init__(self, data_dir='./JSON', model_path='./sports_chatbot_model50.joblib'):
+        """
+        Initialize the engine with paths to data and model artifacts.
+        """
         self.DATA_DIR = data_dir
         self.MODEL_PATH = model_path
         
@@ -41,6 +48,10 @@ class RecommendationEngine:
         }
 
     def load_resources(self):
+        """
+        Load heavy resources (SBERT, Joblib artifacts) and build the Node2Vec graph.
+        Should be called once at startup.
+        """
         print("🔍 SBERT 모델(KR-SBERT) 로딩 중...")
         try:
             self.model_nlp = SentenceTransformer('snunlp/KR-SBERT-V40K-klueNLI-augSTS')
@@ -125,6 +136,11 @@ class RecommendationEngine:
         return n2v.fit(window=5, min_count=1)
 
     def calculate_integrated_score(self, query, anchor_name, candidate):
+        """
+        Calculate individual scores for a single candidate team against a user query and anchor team.
+        Returns:
+            weighted_total_score, s_sem, s_rel, s_vec
+        """
         # 1. Semantic Score (SBERT)
         cand_tags = " ".join(candidate.get('style_tags', []))
         if self.model_nlp:
@@ -190,6 +206,13 @@ class RecommendationEngine:
         return manual_match_score, s_sem, s_rel, s_vec
 
     def recommend(self, query, user_type, support_team, target_league):
+        """
+        Main recommendation logic.
+        1. Identify candidates in target league.
+        2. Calculate component scores (SBERT, Node2Vec, Rule-based Vector).
+        3. Predict final score using ML model.
+        4. Return top team + metadata.
+        """
         json_league_name = self.LEAGUE_MAP.get(target_league, target_league)
         
         candidates = [t for t in self.teams_master if t.get('league', '').lower() == json_league_name.lower()]

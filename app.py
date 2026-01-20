@@ -1,7 +1,11 @@
+# =========================================================
+# 1. Imports & Configuration
+# =========================================================
 from flask import Flask, render_template, request, jsonify, send_from_directory
-from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
+
+# Data Processing & ML Libraries
 import os
 import json
 import pandas as pd
@@ -13,17 +17,18 @@ from node2vec import Node2Vec
 from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
 
-# 환경 변수 로드 (.env 파일에서 DB 정보 등을 가져옴)
+# Environment Variables
 from dotenv import load_dotenv
 load_dotenv()
 
 warnings.filterwarnings("ignore")
 
+# Initialize Flask App
 app = Flask(__name__, static_folder='web/static', template_folder='web/templates')
 
-# ---------------------------------------------------------
-# ✅ 데이터베이스 및 로그인 설정
-# ---------------------------------------------------------
+# =========================================================
+# 2. Database & Login Setup
+# =========================================================
 
 # MySQL 데이터베이스 연결 설정 (database/scripts/connection.py 사용)
 from database.scripts.connection import get_db_uri
@@ -47,27 +52,27 @@ from database.models import User, Team, ChatLog
 import datetime
 
 
-# 로그인 세션을 위한 사용자 로드 함수
+# Load User for Login Manager
 @login_manager.user_loader
 def load_user(user_id):
-    # get_id가 로그인 ID(문자열)를 반환하므로, id 컬럼으로 조회
+    """
+    Flask-Login helper to retrieve a user from our db.
+    """
     return User.query.filter_by(id=user_id).first()
 
-# ---------------------------------------------------------
-# 1. 아티팩트 및 환경 설정
-# ---------------------------------------------------------
+# =========================================================
+# 3. Recommendation Engine Initialization
+# =========================================================
 from scripts.recommendation_engine import RecommendationEngine
 import uuid
 
-# 초기화
-# 모듈 내부에서 model_nlp, n2v_model, artifacts 등을 관리함
-rec_engine = RecommendationEngine(data_dir='./JSON', model_path='./sports_chatbot_model50.joblib')
+# Initialize Recommendation Engine
+# (Manages NLP models, Node2Vec, and Artifacts internally)
+rec_engine = RecommendationEngine(data_dir='./database/JSON', model_path='./fit_model.joblib')
 
-
-
-# ---------------------------------------------------------
-# Flask 라우트
-# ---------------------------------------------------------
+# =========================================================
+# 4. Flask Routes
+# =========================================================
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'GET':
