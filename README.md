@@ -32,7 +32,8 @@
 5.  [🛠 사용된 기술 (Tech Stack)](#-사용된-기술-tech-stack)
 6.  [💻 설치 및 실행 가이드](#-설치-및-실행-가이드)
 7.  [📂 프로젝트 구조](#-프로젝트-구조-directory)
-8.  [👨‍💻 팀원 소개](#-팀원-소개)
+8.  [🧱 핵심 코드 및 데이터 구현](#-핵심-코드-및-데이터-구현-core-code--data-implementation)
+9.  [👨‍💻 팀원 소개](#-팀원-소개)
 
 ---
 
@@ -152,6 +153,100 @@ sports-analysis-fighter/
 └── requirements.txt           # 📦 필요한 라이브러리 목록
 ```
 
+
+---
+
+## 🧱 핵심 코드 및 데이터 구현 (Core Code & Data Implementation)
+
+프로젝트의 핵심이 되는 **데이터베이스 설계, 추천 알고리즘, 모델 학습, 웹 서버** 구현 내용을 실제 코드와 함께 설명합니다.
+
+### 1. 💾 데이터베이스 구현 (MySQL Integration)
+MySQL 데이터베이스와 Flask-SQLAlchemy를 연동하여 팀 정보, 사용자 정보, 채팅 로그를 관리합니다. 특히 `Team` 모델은 AI 분석을 위해 `style_tags`와 `scores`를 JSON 타입으로 저장하여 유연성을 확보했습니다.
+
+**[database/models.py]**
+```python
+# ✅ Team 모델 정의 (MySQL 'team_info' 테이블과 매핑)
+class Team(db.Model):
+    __tablename__ = 'team_info'
+    
+    # 주요 스키마 정의 (VARCHAR 크기 최적화)
+    team_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    team_name = db.Column(db.String(45), unique=True, nullable=False)
+    
+    # AI 분석용 데이터 (JSON 타입 활용)
+    style_tags = db.Column(db.JSON) # 예: ["닥공", "명문", "우승후보"]
+    scores = db.Column(db.JSON)     # 예: {"money": 20, "strength": 15 ...}
+    
+    # ... (기타 컬럼 생략)
+```
+
+### 2. 🧠 하이브리드 추천 엔진 (Recommendation Logic)
+사용자의 자연어 쿼리와 팀 데이터 사이의 연관성을 세 가지 알고리즘(SBERT, Node2Vec, Rule-based)으로 분석하여 통합 점수를 도출합니다.
+
+**[scripts/recommendation_engine.py]**
+```python
+def calculate_integrated_score(self, query, anchor_name, candidate):
+    """
+    1. Semantic Score: 자연어 쿼리와 팀 스타일 태그의 의미적 유사도 (KR-SBERT)
+    2. Relational Score: 선호 팀(Anchor)과 후보 팀 간의 그래프 관계성 (Node2Vec)
+    3. Vector Score: 쿼리 키워드("돈", "공격" 등)에 따른 7대 지표 가중치 매칭
+    """
+    
+    # 1. 자연어 문맥 분석 (SBERT)
+    embs = self.model_nlp.encode([query, cand_tags])
+    s_sem = cosine_similarity([embs[0]], [embs[1]])[0][0]
+
+    # 2. 선호 구단 유사도 (Graph Embedding)
+    if self.n2v_model and anchor_name:
+         s_rel = self.n2v_model.wv.similarity(anchor_name, candidate['team_name'])
+
+    # 3. 사용자 니즈 기반 가중치 계산 (Vector Scoring)
+    # 예: 사용자가 "부자 구단"을 원하면 'money' 스탯 중요도 상향
+    if any(k in query for k in ["강한", "우승", "자본"]):
+        target_vec[...] = 40 # 목표치 설정
+        
+    return manual_match_score, s_sem, s_rel, s_vec
+```
+
+### 3. 🤖 랭킹 모델 학습 (LightGBM Ranker)
+수집된 데이터를 바탕으로 추천 순위를 최적화하기 위해 Learning-to-Rank(LTR) 모델인 LightGBM Ranker를 학습시킵니다. Grid Search를 통해 최적의 파라미터를 탐색합니다.
+
+**[models/train_lgbm_rank.py]**
+```python
+# Learning-to-Rank를 위한 GroupShuffleSplit 설정
+gss = GroupShuffleSplit(n_splits=1, test_size=0.2, random_state=42)
+
+# 하이퍼파라미터 그리드 서치
+param_grid = {
+    'learning_rate': [0.03, 0.05],
+    'n_estimators': [300, 500],
+    'num_leaves': [20, 31],
+    # ...
+}
+
+# LGBM Ranker 학습 loop
+for params in ParameterGrid(param_grid):
+    model = lgb.LGBMRanker(**params, importance_type='gain')
+    model.fit(X_train, y_train, group=group_train)
+    # NDCG 평가 메트릭으로 최적 모델 선정
+```
+
+### 4. 🚀 웹 서버 구동 (Flask App Context)
+Flask 애플리케이션이 시작될 때 DB 연결을 수립하고 추천 엔진 리소스를 메모리에 로드하여 빠른 응답 속도를 보장합니다.
+
+**[app.py]**
+```python
+# 추천 엔진 초기화 (Joblib 모델 로드)
+rec_engine = RecommendationEngine(model_path='./fit_model.joblib')
+
+if __name__ == '__main__':
+    # Flask 앱 컨텍스트 내에서 DB 및 리소스 초기화
+    with app.app_context():
+        db.create_all() # 테이블 생성/확인
+        rec_engine.load_resources() # SBERT 및 팀 데이터 로드
+    
+    app.run(host='0.0.0.0', port=5000)
+```
 
 ---
 
