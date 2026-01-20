@@ -1,4 +1,6 @@
-/* --- 전역 변수 및 데이터 --- */
+/* =========================================================
+   [1] 전역 변수 및 데이터 설정
+   ========================================================= */
 let currentStep = 0;
 
 const leagues = ["EPL", "K 리그", "KBO", "F1"];
@@ -166,12 +168,11 @@ const leagueDetailData = {
     }
 };
 
-/* --------------------------------- */
-/* --------- 정보 수정 필요 --------- */
-/* --------------------------------- */
+/* =========================================================
+   [2] 초기화 및 메인 화면 로직 (하이라이트, 라이브)
+   ========================================================= */
 
-
-/* --- [1] 초기화 (하이라이트 생성 및 초기 라이브 설정) --- */
+/* --- 하이라이트 영상 카드 생성 및 초기 라이브 탭 설정 --- */
 function init() {
     // 하이라이트 생성
     const container = document.getElementById('highlights-container');
@@ -221,7 +222,7 @@ function init() {
     if (firstTab) filterLive('ALL', firstTab);
 }
 
-/* --- [2] 라이브 필터 기능 (목록 사라짐 방지) --- */
+/* --- 라이브 필터 탭 클릭 이벤트 핸들러 --- */
 function filterLive(league, btn) {
     if (!btn) return;
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -397,6 +398,10 @@ function renderAbout() {
   `).join('');
 }
 
+/* =========================================================
+   [3] 인증 (로그인/회원가입) 및 모달 처리
+   ========================================================= */
+
 /* --- [A] 인증 (Auth) 관련 함수 --- */
 function openModal(wantSignUp) {
     document.getElementById('auth-modal').classList.remove('hidden');
@@ -492,8 +497,9 @@ async function logout() {
 
 
 /* =========================================================
-   [B] ✅ 최신 챗봇 로직 (6문항 + 리그→팀 + 서버호환 + 자동 스크롤)
-========================================================= */
+   [4] 챗봇 핵심 로직 (대화 흐름, 추천 엔진 연동)
+   ========================================================= */
+
 
 /* --- [상태] --- */
 let followIndex = 0;
@@ -1362,7 +1368,7 @@ function renderDashboardUI(team, leagueId) {
               ${team.insight}
             </div>
           </div>
-          
+
           ${othersHtml} <!-- ✅ 2,3등 추가된 부분 -->
         </article>
       </div>
@@ -1382,7 +1388,7 @@ function renderDashboardUI(team, leagueId) {
                 </button>
              </div>
           </div>
-          
+
         <div class="footer-buttons" style="display: flex; gap: 10px; justify-content: center; width: 100%;">
             <button class="btn-premium" onclick="resetChat()">다시 분석하기</button>
             <button class="btn-premium primary" onclick="handleTeamAction('${team.name}')">
