@@ -32,12 +32,17 @@ class User(UserMixin, db.Model):
 class Team(db.Model):
     __tablename__ = 'team_info'
     
-    # 추정되는 스키마: team_id(PK), team_name, ...
+    # 스키마 일치: team_id(PK), team_name, league, sport, home_city, home_stadium, logo_url, style_tags, scores, meta_description
     team_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    team_name = db.Column(db.String(100), unique=True, nullable=False)
-    sport = db.Column(db.String(50))
-    league = db.Column(db.String(50))
-    # 필요한 컬럼만 정의
+    team_name = db.Column(db.String(45), unique=True, nullable=False)
+    league = db.Column(db.String(45), nullable=False)
+    sport = db.Column(db.String(45))
+    home_city = db.Column(db.String(45))
+    home_stadium = db.Column(db.String(45))
+    logo_url = db.Column(db.String(500))
+    style_tags = db.Column(db.JSON) # JSON 타입
+    scores = db.Column(db.JSON)     # JSON 타입
+    meta_description = db.Column(db.Text)
 
 # ✅ ChatLog 모델 정의 (MySQL 'chat_logs' 테이블과 매핑)
 class ChatLog(db.Model):
