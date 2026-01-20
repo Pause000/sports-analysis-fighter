@@ -1,0 +1,14 @@
+Flask
+Flask-SQLAlchemy
+Flask-Login
+python-dotenv
+pandas
+numpy
+networkx
+joblib
+node2vec
+sentence-transformers
+scikit-learn
+mysql-connector-python
+PyMySQL
+cryptography
